@@ -1,0 +1,119 @@
+- generic [ref=e2]:
+  - generic [ref=e27]:
+    - generic [ref=e193]:
+      - generic [ref=e194]: 14:09
+      - generic [ref=e195]:
+        - generic [ref=e196]: 
+        - generic [ref=e197]: 
+        - generic [ref=e198]: "88"
+    - generic [ref=e199]:
+      - generic [ref=e200]:
+        - generic [ref=e201]: DOBBLESHOP
+        - generic [ref=e202]: NEO VISION
+      - button "" [ref=e204] [cursor=pointer]:
+        - generic [ref=e205]: 
+    - generic [ref=e207]:
+      - generic [ref=e208]:
+        - generic [ref=e209]:
+          - generic [ref=e210]:
+            - generic [ref=e211]:
+              - text: DOBBLESHOP
+              - text: NEO VISION
+            - generic [ref=e212]: NEO VISION CAT
+          - generic [ref=e213]:
+            - generic [ref=e214]: En ligne
+            - generic [ref=e216]: 🤖
+        - generic [ref=e217]:
+          - generic [ref=e218]:
+            - generic [ref=e219]: 🔋
+            - generic [ref=e220]: Batterie
+            - generic [ref=e221]: 74%
+            - generic [ref=e222]: OK
+          - generic [ref=e223] [cursor=pointer]:
+            - generic [ref=e224]: 🥣
+            - generic [ref=e225]: Trémie croquettes
+            - generic [ref=e226]: Moyen
+            - generic [ref=e227]: 1240g restants
+          - generic [ref=e228] [cursor=pointer]:
+            - generic [ref=e229]: 💧
+            - generic [ref=e230]: Réservoir eau
+            - generic [ref=e231]: Optimal
+            - generic [ref=e232]: 78% · 1560ml
+          - generic [ref=e233]:
+            - generic [ref=e234]: ⚖️
+            - generic [ref=e235]: Gamelle (HX711)
+            - generic [ref=e236]: 0g
+            - generic [ref=e237]: Vide
+        - generic [ref=e238]:
+          - generic [ref=e239]:
+            - generic [ref=e240]: Heure DS3231
+            - generic [ref=e241]: 14:30
+          - generic [ref=e242]: FW v1.4.2
+        - generic [ref=e243]:
+          - button " Nourrir maintenant" [ref=e244] [cursor=pointer]:
+            - generic [ref=e245]: 
+            - text: Nourrir maintenant
+          - generic [ref=e246]:
+            - button " Eau" [ref=e247] [cursor=pointer]:
+              - generic [ref=e248]: 
+              - text: Eau
+            - button " Caméra" [ref=e249] [cursor=pointer]:
+              - generic [ref=e250]: 
+              - text: Caméra
+      - generic [ref=e251] [cursor=pointer]:
+        - generic [ref=e252]:
+          - generic [ref=e253]: Niveaux des réservoirs
+          - generic [ref=e254]: 
+        - generic [ref=e256]:
+          - generic [ref=e257]: 🥣 Croquettes (VL53L0X)
+          - generic [ref=e258]: 62% · 1240g
+        - generic [ref=e262]:
+          - generic [ref=e263]: 💧 Eau
+          - generic [ref=e264]: 78% · 1560ml
+      - generic [ref=e267]:
+        - generic [ref=e268]:
+          - generic [ref=e269]: Animal actif
+          - button "Changer" [ref=e270] [cursor=pointer]
+        - generic [ref=e271]:
+          - generic [ref=e272]: 🐱
+          - generic [ref=e273]:
+            - generic [ref=e274]: Léo
+            - generic [ref=e275]: Chat Domestique
+            - generic [ref=e276]:
+              - generic [ref=e277]: 🥣 65g/j
+              - generic [ref=e278]: 💧 220ml/j
+          - button " Ration" [ref=e279] [cursor=pointer]:
+            - generic [ref=e280]: 
+            - text: Ration
+      - generic [ref=e281]:
+        - generic [ref=e282]:
+          - generic [ref=e283]: Activité récente
+          - button "Historique" [ref=e284] [cursor=pointer]
+        - generic [ref=e285]:
+          - generic [ref=e286]:
+            - generic [ref=e287]: ⚠️
+            - generic [ref=e288]:
+              - generic [ref=e289]: Bourrage (résolu)
+              - generic [ref=e290]: 11:12
+          - generic [ref=e291]:
+            - generic [ref=e292]: 💧
+            - generic [ref=e293]:
+              - generic [ref=e294]: 150ml distribués
+              - generic [ref=e295]: 20:00
+          - generic [ref=e296]:
+            - generic [ref=e297]: 💧
+            - generic [ref=e298]:
+              - generic [ref=e299]: 100ml distribués
+              - generic [ref=e300]: 16:00
+          - generic [ref=e301]:
+            - generic [ref=e302]: 🥣
+            - generic [ref=e303]:
+              - generic [ref=e304]: "80g servis (réel: 80g · HX711)"
+              - generic [ref=e305]: 19:30
+          - generic [ref=e306]:
+            - generic [ref=e307]: 🔐
+            - generic [ref=e308]:
+              - generic [ref=e309]: Présence détectée — 92%
+              - generic [ref=e310]: 14:15
+            - generic [ref=e311]: 📸
+  - text:                                      

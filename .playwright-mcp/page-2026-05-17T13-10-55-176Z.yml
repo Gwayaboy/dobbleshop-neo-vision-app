@@ -1,0 +1,131 @@
+- generic [ref=e2]:
+  - text:                                           
+  - generic [ref=e558]:
+    - generic [ref=e559]:
+      - generic [ref=e560]: 14:10
+      - generic [ref=e561]:
+        - generic [ref=e562]: 
+        - generic [ref=e563]: "78"
+    - heading "Réglages" [level=1] [ref=e565]
+    - generic [ref=e566]: DOBBLESHOP NEO VISION
+    - generic [ref=e567]:
+      - generic [ref=e568]:
+        - generic [ref=e569]: DOBBLESHOP NEO VISION
+        - generic [ref=e570]:
+          - generic [ref=e571] [cursor=pointer]:
+            - generic [ref=e573]: 
+            - generic [ref=e574]:
+              - generic [ref=e575]: Onboarding
+              - generic [ref=e576]: Guide de démarrage
+            - generic [ref=e577]: 
+          - generic [ref=e578] [cursor=pointer]:
+            - generic [ref=e580]: 
+            - generic [ref=e581]:
+              - generic [ref=e582]: Gestion de l'eau
+              - generic [ref=e583]: Suivi consommation & alertes
+            - generic [ref=e584]: 
+          - generic [ref=e585] [cursor=pointer]:
+            - generic [ref=e587]: 
+            - generic [ref=e588]:
+              - generic [ref=e589]: Communication appareil
+              - generic [ref=e590]: Bluetooth & Wi-Fi
+            - generic [ref=e591]: 
+          - generic [ref=e592] [cursor=pointer]:
+            - generic [ref=e594]: 
+            - generic [ref=e595]:
+              - generic [ref=e596]: Notifications
+              - generic [ref=e597]: Alertes & préférences
+            - generic [ref=e598]: 
+          - generic [ref=e599] [cursor=pointer]:
+            - generic [ref=e601]: 
+            - generic [ref=e602]:
+              - generic [ref=e603]: Multi-utilisateurs
+              - generic [ref=e604]: Partage sécurisé (V1.5)
+            - generic [ref=e605]: 
+      - generic [ref=e606]:
+        - generic [ref=e607]: MATÉRIEL & DIAGNOSTICS
+        - generic [ref=e608]:
+          - generic [ref=e609] [cursor=pointer]:
+            - generic [ref=e611]: 
+            - generic [ref=e612]:
+              - generic [ref=e613]: Diagnostics matériels
+              - generic [ref=e614]: ESP32-S3 · RPi Zero 2W · capteurs
+            - generic [ref=e615]: 
+          - generic [ref=e616] [cursor=pointer]:
+            - generic [ref=e618]: 
+            - generic [ref=e619]:
+              - generic [ref=e620]: Réservoirs & Gamelle
+              - generic [ref=e621]: Niveaux · HX711 · VL53L0X
+            - generic [ref=e622]: 
+          - generic [ref=e623] [cursor=pointer]:
+            - generic [ref=e625]: 
+            - generic [ref=e626]:
+              - generic [ref=e627]: Sécurité maison
+              - generic [ref=e628]: mmWave · captures · événements
+            - generic [ref=e629]: 
+          - generic [ref=e630] [cursor=pointer]:
+            - generic [ref=e632]: 
+            - generic [ref=e633]:
+              - generic [ref=e634]: Historique complet
+              - generic [ref=e635]: Distributions · graphiques
+            - generic [ref=e636]: 
+          - generic [ref=e637] [cursor=pointer]:
+            - generic [ref=e639]: 
+            - generic [ref=e640]:
+              - generic [ref=e641]: Ration intelligente
+              - generic [ref=e642]: RER/DER · V1.5
+            - generic [ref=e643]: 
+          - generic [ref=e644] [cursor=pointer]:
+            - generic [ref=e646]: 
+            - generic [ref=e647]:
+              - generic [ref=e648]: Mise à jour firmware OTA
+              - generic [ref=e649]: v1.4.2 → v1.5.0 disponible
+            - generic [ref=e650]: Maj
+      - generic [ref=e651]:
+        - generic [ref=e652]: COMPTE
+        - generic [ref=e653]:
+          - generic [ref=e654] [cursor=pointer]:
+            - generic [ref=e656]: 
+            - generic [ref=e657]:
+              - generic [ref=e658]: Compte utilisateur
+              - generic [ref=e659]: Carl Tacita
+            - generic [ref=e660]: 
+          - generic [ref=e661] [cursor=pointer]:
+            - generic [ref=e663]: 
+            - generic [ref=e664]:
+              - generic [ref=e665]: Synchronisation
+              - generic [ref=e666]: "Dernière synchro : il y a 2 min"
+            - generic [ref=e667]: 
+          - generic [ref=e668] [cursor=pointer]:
+            - generic [ref=e670]: 
+            - generic [ref=e671]:
+              - generic [ref=e672]: Langue & Région
+              - generic [ref=e673]: Français (France)
+            - generic [ref=e674]: 
+          - generic [ref=e675] [cursor=pointer]:
+            - generic [ref=e677]: 
+            - generic [ref=e678]:
+              - generic [ref=e679]: Support & Aide
+              - generic [ref=e680]: FAQ · contact@dobbleshop.fr
+            - generic [ref=e681]: 
+      - generic [ref=e682]:
+        - generic [ref=e683]: 🐾
+        - generic [ref=e684]: DOBBLESHOP NEO VISION
+        - generic [ref=e685]: v1.4.2 · ESP32-S3 · RPi Zero 2W · V1+V1.5
+        - button " Déconnexion" [ref=e686] [cursor=pointer]:
+          - generic [ref=e687]: 
+          - text: Déconnexion
+    - navigation [ref=e688]:
+      - button " Accueil" [ref=e689] [cursor=pointer]:
+        - generic [ref=e690]: 
+        - generic [ref=e691]: Accueil
+      - button " Repas" [ref=e692] [cursor=pointer]:
+        - generic [ref=e693]: 
+        - generic [ref=e694]: Repas
+      - button " Caméra" [ref=e695] [cursor=pointer]:
+        - generic [ref=e696]: 
+        - generic [ref=e697]: Caméra
+      - button " Réglages" [ref=e698] [cursor=pointer]:
+        - generic [ref=e699]: 
+        - generic [ref=e700]: Réglages
+  - text:              

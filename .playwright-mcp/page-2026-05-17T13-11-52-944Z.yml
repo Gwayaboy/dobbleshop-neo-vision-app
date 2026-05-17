@@ -1,0 +1,59 @@
+- generic [ref=e2]:
+  - text:            +                                                                           
+  - generic [ref=e880]:
+    - generic [ref=e882]: 14:11
+    - generic [ref=e883]:
+      - button "" [ref=e884] [cursor=pointer]:
+        - generic [ref=e885]: 
+      - generic [ref=e886]:
+        - generic [ref=e887]: DOBBLESHOP
+        - generic [ref=e888]: NEO VISION
+    - heading "Communication" [level=1] [ref=e889]
+    - generic [ref=e890]:
+      - generic [ref=e891]:
+        - button " Bluetooth" [ref=e892] [cursor=pointer]:
+          - generic [ref=e893]: 
+          - text: Bluetooth
+        - button " Wi-Fi" [active] [ref=e894] [cursor=pointer]:
+          - generic [ref=e895]: 
+          - text: Wi-Fi
+      - generic [ref=e896]:
+        - generic [ref=e920]:
+          - generic [ref=e921]: Configuration Wi-Fi (Provisioning BLE → ESP32)
+          - generic [ref=e922]:
+            - generic [ref=e923]: SSID (Réseau)
+            - textbox "MonReseau_5G" [ref=e924]
+          - generic [ref=e925]:
+            - generic [ref=e926]: MOT DE PASSE
+            - textbox "••••••••" [ref=e927]
+          - button " Envoyer à l'appareil" [ref=e928] [cursor=pointer]:
+            - generic [ref=e929]: 
+            - text: Envoyer à l'appareil
+        - generic [ref=e930]:
+          - generic [ref=e931]: Séquence d'appairage
+          - generic [ref=e932]:
+            - generic [ref=e933]:
+              - generic [ref=e934]: "1"
+              - generic [ref=e935]: Publicité BLE activée sur ESP32-S3
+            - generic [ref=e936]: ✅
+          - generic [ref=e937]:
+            - generic [ref=e938]:
+              - generic [ref=e939]: "2"
+              - generic [ref=e940]: Challenge/réponse sécurisé
+            - generic [ref=e941]: ✅
+          - generic [ref=e942]:
+            - generic [ref=e943]:
+              - generic [ref=e944]: "3"
+              - generic [ref=e945]: SSID + MDP envoyés via BLE
+            - generic [ref=e946]: ⏳
+          - generic [ref=e947]:
+            - generic [ref=e948]:
+              - generic [ref=e949]: "4"
+              - generic [ref=e950]: ESP32 connecté au Wi-Fi
+            - generic [ref=e951]: ⏳
+          - generic [ref=e952]:
+            - generic [ref=e953]:
+              - generic [ref=e954]: "5"
+              - generic [ref=e955]: Token device-ready reçu
+            - generic [ref=e956]: ⏳
+  - text:             

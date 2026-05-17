@@ -1,0 +1,116 @@
+- generic [ref=e2]:
+  - text:                       
+  - generic [ref=e430]:
+    - generic [ref=e431]:
+      - generic [ref=e432]: 14:10
+      - generic [ref=e433]:
+        - generic [ref=e434]: 5G
+        - generic [ref=e435]: "98"
+    - generic [ref=e436]:
+      - generic [ref=e437]:
+        - generic [ref=e438]: 🐾
+        - generic [ref=e439]:
+          - generic [ref=e440]: DOBBLESHOP
+          - generic [ref=e441]: NEO VISION
+      - generic [ref=e442]:
+        - button "" [ref=e443] [cursor=pointer]:
+          - generic [ref=e444]: 
+        - button "" [ref=e445] [cursor=pointer]:
+          - generic [ref=e446]: 
+    - heading "Caméra" [level=1] [ref=e447]
+    - generic [ref=e448]:
+      - generic [ref=e449]:
+        - generic [ref=e450]:
+          - generic [ref=e451]: Flux en direct (RPi Camera Mod 3 · CSI)
+          - generic [ref=e452]: 14:10 · 24 OCT
+        - generic [ref=e453]:
+          - generic [ref=e454]:
+            - generic [ref=e455]: 
+            - paragraph [ref=e456]: Flux H.264 · RPi Zero 2W
+          - generic [ref=e457]: EN DIRECT
+          - generic [ref=e459]:
+            - generic [ref=e460]: ●
+            - text: REC
+        - generic [ref=e461]:
+          - button "" [ref=e462] [cursor=pointer]:
+            - generic [ref=e463]: 
+          - button "" [ref=e464] [cursor=pointer]:
+            - generic [ref=e465]: 
+          - button "" [ref=e466] [cursor=pointer]:
+            - generic [ref=e467]: 
+          - button "" [ref=e468] [cursor=pointer]:
+            - generic [ref=e469]: 
+      - generic [ref=e470]:
+        - generic [ref=e471]: Audio bidirectionnel (I2S · INMP441 + MAX98357A)
+        - generic [ref=e472]:
+          - generic [ref=e473]:
+            - generic [ref=e474]:
+              - generic [ref=e475]: 
+              - text: Micro
+            - generic [ref=e476]: inactif
+          - generic [ref=e477]:
+            - generic [ref=e478]:
+              - generic [ref=e479]: 
+              - text: Haut-parleur
+            - generic [ref=e480]: actif
+        - generic [ref=e506]:
+          - button " Parler Maintenez" [ref=e507] [cursor=pointer]:
+            - generic [ref=e508]:
+              - generic [ref=e509]: 
+              - generic [ref=e510]: Parler
+            - generic [ref=e511]: Maintenez
+          - button " Écouter" [ref=e512] [cursor=pointer]:
+            - generic [ref=e513]: 
+            - text: Écouter
+        - generic [ref=e514]: "Parler : MAX98357A → haut-parleur 4Ω · Écouter : INMP441 I2S → stream"
+      - generic [ref=e516]:
+        - generic [ref=e517]:
+          - generic [ref=e518]: Salon — Caméra 1
+          - generic [ref=e519]: En ligne
+          - generic [ref=e521]: "Wi-Fi : excellent (-42 dBm)"
+        - generic [ref=e522]:
+          - button "" [ref=e523] [cursor=pointer]:
+            - generic [ref=e524]: 
+          - button "" [ref=e525] [cursor=pointer]:
+            - generic [ref=e526]: 
+          - button "" [ref=e527] [cursor=pointer]:
+            - generic [ref=e528]: 
+          - button "" [ref=e529] [cursor=pointer]:
+            - generic [ref=e530]: 
+      - generic [ref=e531]:
+        - generic [ref=e532]: 🛡️ Sécurité domicile (mmWave · RPi UART)
+        - generic [ref=e533]:
+          - generic [ref=e534]:
+            - generic [ref=e535]: Mode
+            - generic [ref=e536]: Automatique
+          - generic [ref=e537]: ✅ Aucune
+        - generic [ref=e538]:
+          - button "⏸ Off" [ref=e539] [cursor=pointer]:
+            - text: ⏸
+            - text: "Off"
+          - button "🏠 Home" [ref=e540] [cursor=pointer]:
+            - text: 🏠
+            - text: Home
+          - button "🚨 Absent" [ref=e541] [cursor=pointer]:
+            - text: 🚨
+            - text: Absent
+          - button "🤖 Auto" [ref=e542] [cursor=pointer]:
+            - text: 🤖
+            - text: Auto
+        - button " Voir les événements sécurité" [ref=e543] [cursor=pointer]:
+          - generic [ref=e544]: 
+          - text: Voir les événements sécurité
+    - navigation [ref=e545]:
+      - button " Accueil" [ref=e546] [cursor=pointer]:
+        - generic [ref=e547]: 
+        - generic [ref=e548]: Accueil
+      - button " Repas" [ref=e549] [cursor=pointer]:
+        - generic [ref=e550]: 
+        - generic [ref=e551]: Repas
+      - button " Caméra" [ref=e552] [cursor=pointer]:
+        - generic [ref=e553]: 
+        - generic [ref=e554]: Caméra
+      - button " Réglages" [ref=e555] [cursor=pointer]:
+        - generic [ref=e556]: 
+        - generic [ref=e557]: Réglages
+  - text:                   
