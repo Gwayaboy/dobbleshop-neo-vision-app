@@ -52,6 +52,7 @@ fun DobbleShopApp() {
                             Icon(
                                 imageVector = when (destination) {
                                     is AppDestination.Dashboard -> Icons.Default.Home
+                                    is AppDestination.Pets -> Icons.Default.Pets
                                     is AppDestination.Feeding -> Icons.Default.Restaurant
                                     is AppDestination.Camera -> Icons.Default.Videocam
                                     is AppDestination.Settings -> Icons.Default.Settings
@@ -64,6 +65,7 @@ fun DobbleShopApp() {
                             Text(
                                 text = when (destination) {
                                     is AppDestination.Dashboard -> stringResource(R.string.nav_home)
+                                    is AppDestination.Pets -> stringResource(R.string.nav_pets)
                                     is AppDestination.Feeding -> stringResource(R.string.nav_feeding)
                                     is AppDestination.Camera -> stringResource(R.string.nav_camera)
                                     is AppDestination.Settings -> stringResource(R.string.nav_settings)
