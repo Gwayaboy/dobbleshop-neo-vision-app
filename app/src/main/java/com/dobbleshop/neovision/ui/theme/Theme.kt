@@ -8,38 +8,65 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val LightColorScheme = lightColorScheme(
     primary = NeoPrimary,
-    secondary = NeoSecondary,
-    tertiary = NeoAccent,
-    background = NeoBackground,
-    surface = NeoSurface,
-    surfaceVariant = NeoSurfaceVariant,
     onPrimary = NeoSurface,
+    primaryContainer = NeoPrimaryLight,
+    onPrimaryContainer = NeoPrimaryDark,
+    
+    secondary = NeoAccent,
     onSecondary = NeoSurface,
+    secondaryContainer = NeoSecondary,
+    onSecondaryContainer = NeoPrimaryDark,
+    
+    tertiary = StatusOK,
     onTertiary = NeoSurface,
-    onBackground = NeoText,
-    onSurface = NeoText,
-    onSurfaceVariant = NeoTextSecondary,
+    
     error = StatusCritical,
-    onError = NeoSurface
+    onError = NeoSurface,
+    
+    background = NeoBackground,
+    onBackground = NeoText,
+    
+    surface = NeoSurface,
+    onSurface = NeoText,
+    surfaceVariant = NeoSurfaceVariant,
+    onSurfaceVariant = NeoTextSecondary,
+    
+    outline = Color(0xFFE0E0E0),
+    outlineVariant = Color(0xFFF5F5F5)
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = NeoPrimaryDark,
-    secondary = NeoSecondary,
-    tertiary = NeoAccent,
-    background = NeoBackgroundDark,
-    surface = NeoSurfaceDark,
-    onPrimary = NeoText,
-    onSecondary = NeoText,
-    onTertiary = NeoText,
-    onBackground = NeoTextDark,
-    onSurface = NeoTextDark,
+    primary = NeoPrimary,
+    onPrimary = NeoSurface,
+    primaryContainer = NeoPrimaryDark,
+    onPrimaryContainer = NeoPrimaryLight,
+    
+    secondary = NeoAccent,
+    onSecondary = NeoSurface,
+    secondaryContainer = NeoPrimaryDark,
+    onSecondaryContainer = NeoSecondary,
+    
+    tertiary = StatusOK,
+    onTertiary = NeoSurface,
+    
     error = StatusCritical,
-    onError = NeoSurface
+    onError = NeoSurface,
+    
+    background = NeoBackgroundDark,
+    onBackground = NeoTextDark,
+    
+    surface = NeoSurfaceDark,
+    onSurface = NeoTextDark,
+    surfaceVariant = Color(0xFF2C2C2C),
+    onSurfaceVariant = Color(0xFFBDBDBD),
+    
+    outline = Color(0xFF424242),
+    outlineVariant = Color(0xFF616161)
 )
 
 @Composable

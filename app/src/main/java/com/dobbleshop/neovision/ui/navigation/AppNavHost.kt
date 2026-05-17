@@ -8,7 +8,6 @@ import androidx.navigation.compose.composable
 import com.dobbleshop.neovision.ui.screens.DashboardScreen
 import com.dobbleshop.neovision.ui.screens.CameraScreen
 import com.dobbleshop.neovision.ui.screens.FeedingScreen
-import com.dobbleshop.neovision.ui.screens.PetsScreen
 import com.dobbleshop.neovision.ui.screens.SettingsScreen
 
 @Composable
@@ -22,18 +21,7 @@ fun AppNavHost(
         modifier = modifier
     ) {
         composable(AppDestination.Dashboard.route) {
-            DashboardScreen(
-                onNavigateToDevice = {
-                    navController.navigate(AppDestination.DeviceDetail.route)
-                },
-                onNavigateToHistory = {
-                    navController.navigate(AppDestination.History.route)
-                }
-            )
-        }
-        
-        composable(AppDestination.Pets.route) {
-            PetsScreen()
+            DashboardScreen()
         }
         
         composable(AppDestination.Feeding.route) {

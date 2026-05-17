@@ -3,6 +3,7 @@ package com.dobbleshop.neovision.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -18,17 +19,23 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CameraScreen() {
     var isMicEnabled by remember { mutableStateOf(false) }
-    var isSpeakerEnabled by remember { mutableStateOf(false) }
+    var isSpeakerEnabled by remember { mutableStateOf(true) }
     
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Caméra & Audio") },
+                title = {
+                    Text(
+                        "Caméra & Audio",
+                        color = Color.White
+                    )
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = Color(0xFF1C1C1E)
                 )
             )
-        }
+        },
+        containerColor = Color(0xFF000000)
     ) { paddingValues ->
         Column(
             modifier = Modifier

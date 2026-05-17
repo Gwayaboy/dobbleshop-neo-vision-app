@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -12,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import java.time.LocalTime
@@ -25,12 +27,18 @@ fun FeedingScreen() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Repas & Planification") },
+                title = {
+                    Text(
+                        "Repas & Planification",
+                        color = Color.White
+                    )
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = Color(0xFF1C1C1E)
                 )
             )
-        }
+        },
+        containerColor = Color(0xFF000000)
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -60,50 +68,49 @@ fun FeedingScreen() {
 
 @Composable
 fun DailySummaryCard() {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        )
+        color = Color(0xFF3A4D6E),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(24.dp),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = "240g",
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.displaySmall,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                    color = Color.White
                 )
                 Text(
                     text = "Servi aujourd'hui",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White.copy(alpha = 0.7f)
                 )
             }
             
             Divider(
                 modifier = Modifier
-                    .height(48.dp)
+                    .height(56.dp)
                     .width(1.dp),
-                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.3f)
+                color = Color.White.copy(alpha = 0.3f)
             )
             
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = "3",
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.displaySmall,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                    color = Color.White
                 )
                 Text(
                     text = "Distributions",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White.copy(alpha = 0.7f)
                 )
             }
         }
@@ -112,8 +119,10 @@ fun DailySummaryCard() {
 
 @Composable
 fun ActiveAnimalCard() {
-    Card(
-        modifier = Modifier.fillMaxWidth()
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = Color(0xFF2C2C2E),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Row(
             modifier = Modifier
@@ -126,36 +135,39 @@ fun ActiveAnimalCard() {
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primaryContainer),
-                    contentAlignment = Alignment.Center
+                Surface(
+                    modifier = Modifier.size(48.dp),
+                    shape = CircleShape,
+                    color = Color(0xFF3A4D6E)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Pets,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Pets,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                    }
                 }
                 
                 Column {
                     Text(
                         text = "Animal actif",
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                        color = Color.White.copy(alpha = 0.6f)
                     )
                     Text(
                         text = "Léo",
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
                     )
                 }
             }
             
             TextButton(onClick = { /* Change animal */ }) {
-                Text("Changer")
+                Text("Changer", color = Color(0xFF64B5F6))
             }
         }
     }
@@ -166,8 +178,10 @@ fun ManualDistributionCard(
     selectedPortion: Int,
     onPortionChange: (Int) -> Unit
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth()
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = Color(0xFF2C2C2E),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Column(
             modifier = Modifier
@@ -178,7 +192,8 @@ fun ManualDistributionCard(
             Text(
                 text = "Distribution manuelle",
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.White
             )
             
             // Portion Control
@@ -189,7 +204,8 @@ fun ManualDistributionCard(
             ) {
                 Text(
                     text = "Portion",
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.White
                 )
                 
                 Row(
@@ -198,22 +214,29 @@ fun ManualDistributionCard(
                 ) {
                     FilledIconButton(
                         onClick = { if (selectedPortion > 20) onPortionChange(selectedPortion - 10) },
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(40.dp),
+                        colors = IconButtonDefaults.filledIconButtonColors(
+                            containerColor = Color(0xFF64B5F6)
+                        )
                     ) {
-                        Icon(Icons.Default.Remove, contentDescription = "Decrease")
+                        Icon(Icons.Default.Remove, contentDescription = "Decrease", tint = Color.White)
                     }
                     
                     Text(
                         text = "${selectedPortion}g",
                         style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
                     )
                     
                     FilledIconButton(
                         onClick = { if (selectedPortion < 200) onPortionChange(selectedPortion + 10) },
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(40.dp),
+                        colors = IconButtonDefaults.filledIconButtonColors(
+                            containerColor = Color(0xFF64B5F6)
+                        )
                     ) {
-                        Icon(Icons.Default.Add, contentDescription = "Increase")
+                        Icon(Icons.Default.Add, contentDescription = "Increase", tint = Color.White)
                     }
                 }
             }
@@ -223,21 +246,32 @@ fun ManualDistributionCard(
                 value = selectedPortion.toFloat(),
                 onValueChange = { onPortionChange(it.toInt()) },
                 valueRange = 20f..200f,
-                steps = 17
+                steps = 17,
+                colors = SliderDefaults.colors(
+                    thumbColor = Color(0xFF64B5F6),
+                    activeTrackColor = Color(0xFF64B5F6),
+                    inactiveTrackColor = Color(0xFF424242)
+                )
             )
             
             // Distribute Button
             Button(
                 onClick = { /* Distribute food */ },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF64B5F6)
+                ),
+                shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(16.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Restaurant,
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
+                    tint = Color.White
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Distribuer maintenant")
+                Text("Distribuer maintenant", color = Color.White, fontWeight = FontWeight.Bold)
             }
         }
     }

@@ -1,0 +1,79 @@
+- generic [ref=e2]:
+  - text:        
+  - generic [ref=e147]:
+    - generic [ref=e148]:
+      - generic [ref=e149]: 17:08
+      - generic [ref=e150]:
+        - generic [ref=e151]: 
+        - generic [ref=e152]: 
+        - generic [ref=e153]: "91"
+    - generic [ref=e154]:
+      - generic [ref=e155]:
+        - generic [ref=e156]: DOBBLESHOP
+        - generic [ref=e157]: NEO VISION
+      - button "" [ref=e158] [cursor=pointer]:
+        - generic [ref=e159]: 
+    - heading "Animaux" [level=1] [ref=e160]
+    - generic [ref=e161]:
+      - generic [ref=e162]:
+        - generic [ref=e163]:
+          - generic [ref=e164]: 🐱
+          - generic [ref=e165]:
+            - heading "Léo" [level=3] [ref=e166]
+            - generic [ref=e167]: Chat Domestique
+            - generic [ref=e168]: 4 ans
+          - generic [ref=e169]: Actif
+        - generic [ref=e171]:
+          - generic [ref=e172]:
+            - generic [ref=e173]: Poids
+            - generic [ref=e174]: 5.2 kg
+          - generic [ref=e175]:
+            - generic [ref=e176]: Âge
+            - generic [ref=e177]: 4a 3m
+          - generic [ref=e178]:
+            - generic [ref=e179]: Croquettes / jour
+            - generic [ref=e180]: 🥣 65g
+          - generic [ref=e181]:
+            - generic [ref=e182]: Eau / jour
+            - generic [ref=e183]: 💧 220 ml
+        - button "Détails" [ref=e185] [cursor=pointer]
+      - generic [ref=e186]:
+        - generic [ref=e187]:
+          - generic [ref=e188]: 🐶
+          - generic [ref=e189]:
+            - heading "Maya" [level=3] [ref=e190]
+            - generic [ref=e191]: Golden Retriever
+            - generic [ref=e192]: 6 ans
+        - generic [ref=e194]:
+          - generic [ref=e195]:
+            - generic [ref=e196]: Poids
+            - generic [ref=e197]: 28.4 kg
+          - generic [ref=e198]:
+            - generic [ref=e199]: Âge
+            - generic [ref=e200]: 6a 1m
+          - generic [ref=e201]:
+            - generic [ref=e202]: Croquettes / jour
+            - generic [ref=e203]: 🥣 310g
+          - generic [ref=e204]:
+            - generic [ref=e205]: Eau / jour
+            - generic [ref=e206]: 💧 1.4 L
+        - generic [ref=e207]:
+          - button "Détails" [ref=e208] [cursor=pointer]
+          - button "Sélectionner" [ref=e209] [cursor=pointer]
+      - button "+ Ajouter un animal" [ref=e210] [cursor=pointer]:
+        - generic [ref=e211]: +
+        - text: Ajouter un animal
+    - navigation [ref=e212]:
+      - button " Accueil" [ref=e213] [cursor=pointer]:
+        - generic [ref=e214]: 
+        - generic [ref=e215]: Accueil
+      - button " Repas" [ref=e216] [cursor=pointer]:
+        - generic [ref=e217]: 
+        - generic [ref=e218]: Repas
+      - button " Caméra" [ref=e219] [cursor=pointer]:
+        - generic [ref=e220]: 
+        - generic [ref=e221]: Caméra
+      - button " Réglages" [ref=e222] [cursor=pointer]:
+        - generic [ref=e223]: 
+        - generic [ref=e224]: Réglages
+  - text:                          

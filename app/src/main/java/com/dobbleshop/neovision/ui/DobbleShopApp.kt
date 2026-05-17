@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -28,7 +29,8 @@ fun DobbleShopApp() {
         bottomBar = {
             NavigationBar(
                 containerColor = MaterialTheme.colorScheme.surface,
-                tonalElevation = NavigationBarDefaults.Elevation
+                contentColor = MaterialTheme.colorScheme.onSurface,
+                tonalElevation = 8.dp
             ) {
                 bottomNavDestinations.forEach { destination ->
                     val selected = currentDestination?.hierarchy?.any { 
@@ -52,7 +54,6 @@ fun DobbleShopApp() {
                             Icon(
                                 imageVector = when (destination) {
                                     is AppDestination.Dashboard -> Icons.Default.Home
-                                    is AppDestination.Pets -> Icons.Default.Pets
                                     is AppDestination.Feeding -> Icons.Default.Restaurant
                                     is AppDestination.Camera -> Icons.Default.Videocam
                                     is AppDestination.Settings -> Icons.Default.Settings
@@ -65,7 +66,6 @@ fun DobbleShopApp() {
                             Text(
                                 text = when (destination) {
                                     is AppDestination.Dashboard -> stringResource(R.string.nav_home)
-                                    is AppDestination.Pets -> stringResource(R.string.nav_pets)
                                     is AppDestination.Feeding -> stringResource(R.string.nav_feeding)
                                     is AppDestination.Camera -> stringResource(R.string.nav_camera)
                                     is AppDestination.Settings -> stringResource(R.string.nav_settings)

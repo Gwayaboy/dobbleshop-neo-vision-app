@@ -1,7 +1,13 @@
 package com.dobbleshop.neovision.ui.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -9,11 +15,18 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.dobbleshop.neovision.data.model.BowlStatus
 import com.dobbleshop.neovision.data.model.DeviceStatus
+import com.dobbleshop.neovision.data.model.Pet
+import com.dobbleshop.neovision.ui.components.AddPetDialog
+import com.dobbleshop.neovision.ui.viewmodel.PetsViewModel
+import com.dobbleshop.neovision.ui.viewmodel.PetsUiState
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,9 +37,18 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
-    onNavigateToDevice: () -> Unit = {},
-    onNavigateToHistory: () -> Unit = {}
+    petsViewModel: PetsViewModel = hiltViewModel()
 ) {
+    val petsUiState by petsViewModel.uiState.collectAsState()
+    var showAnimalDialog by remember { mutableStateOf(false) }
+    var showAddPetDialog by remember { mutableStateOf(false) }
+    
+    // Get the first active pet or first pet in list
+    val activePet = when (val state = petsUiState) {
+        is PetsUiState.Success -> state.pets.firstOrNull()
+        else -> null
+    }
+    
     // Mock device status - in real app would come from ViewModel
     val deviceStatus = remember {
         DeviceStatus(
@@ -56,23 +78,41 @@ fun DashboardScreen(
             TopAppBar(
                 title = {
                     Column {
-                        Text("DOBBLESHOP", style = MaterialTheme.typography.titleLarge)
+                        Text(
+                            "DOBBLESHOP",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF2196F3)
+                        )
                         Text(
                             "NEO VISION",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.primary
+                            color = Color(0xFF4FC3F7)
                         )
                     }
                 },
                 actions = {
-                    Badge(
-                        containerColor = MaterialTheme.colorScheme.error
-                    ) {
-                        IconButton(onClick = { /* TODO: Open notifications */ }) {
-                            Icon(Icons.Default.Notifications, contentDescription = "Notifications")
+                    IconButton(onClick = { /* TODO: Open notifications */ }) {
+                        BadgedBox(
+                            badge = {
+                                Badge(
+                                    containerColor = Color(0xFFF44336)
+                                ) {
+                                    Text("3", color = Color.White)
+                                }
+                            }
+                        ) {
+                            Icon(
+                                Icons.Default.Notifications,
+                                contentDescription = "Notifications",
+                                tint = Color(0xFF2196F3)
+                            )
                         }
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.White
+                )
             )
         }
     ) { paddingValues ->
@@ -80,6 +120,7 @@ fun DashboardScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .background(Color(0xFFF5F5F5))
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
@@ -93,42 +134,68 @@ fun DashboardScreen(
             Spacer(modifier = Modifier.height(16.dp))
             
             // Action buttons
-            Row(
+            Button(
+                onClick = { /* TODO: Feed now */ },
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF2196F3)
+                ),
+                contentPadding = PaddingValues(16.dp)
             ) {
-                Button(
-                    onClick = { /* TODO: Feed now */ },
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Icon(Icons.Default.Restaurant, contentDescription = null)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Nourrir maintenant")
-                }
+                Icon(Icons.Default.Restaurant, contentDescription = null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Nourrir maintenant", style = MaterialTheme.typography.labelLarge)
             }
             
             Spacer(modifier = Modifier.height(8.dp))
             
+            // Eau and Caméra buttons
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 OutlinedButton(
-                    onClick = { /* TODO: Water */ },
-                    modifier = Modifier.weight(1f)
+                    onClick = { /* TODO: Water screen */ },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = Color(0xFF00BCD4)
+                    ),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFE0F7FA)),
+                    contentPadding = PaddingValues(16.dp)
                 ) {
-                    Icon(Icons.Default.WaterDrop, contentDescription = null)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Eau")
+                    Icon(
+                        Icons.Default.WaterDrop,
+                        contentDescription = null,
+                        tint = Color(0xFF00BCD4)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        "Eau",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = Color(0xFF00BCD4)
+                    )
                 }
                 
                 OutlinedButton(
-                    onClick = { /* TODO: Camera */ },
-                    modifier = Modifier.weight(1f)
+                    onClick = { /* TODO: Camera screen */ },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = Color(0xFF2196F3)
+                    ),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFE3F2FD)),
+                    contentPadding = PaddingValues(16.dp)
                 ) {
-                    Icon(Icons.Default.Videocam, contentDescription = null)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Caméra")
+                    Icon(
+                        Icons.Default.Videocam,
+                        contentDescription = null,
+                        tint = Color(0xFF2196F3)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        "Caméra",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = Color(0xFF2196F3)
+                    )
                 }
             }
             
@@ -140,11 +207,40 @@ fun DashboardScreen(
             Spacer(modifier = Modifier.height(16.dp))
             
             // Active animal (mock)
-            ActiveAnimalCard(
-                petName = "Léo",
-                onChangePet = { /* TODO */ }
-            )
+            if (activePet != null) {
+                ActiveAnimalCard(
+                    pet = activePet,
+                    onChangePet = { showAnimalDialog = true }
+                )
+            }
         }
+    }
+    
+    // Animal selection dialog
+    if (showAnimalDialog) {
+        AnimalSelectionDialog(
+            petsUiState = petsUiState,
+            onDismiss = { showAnimalDialog = false },
+            onSelectPet = { pet ->
+                // TODO: Set active pet in view model
+                showAnimalDialog = false
+            },
+            onAddPet = {
+                showAnimalDialog = false
+                showAddPetDialog = true
+            }
+        )
+    }
+    
+    // Add Pet Dialog
+    if (showAddPetDialog) {
+        AddPetDialog(
+            onDismiss = { showAddPetDialog = false },
+            onConfirm = { pet: Pet ->
+                petsViewModel.addPet(pet)
+                showAddPetDialog = false
+            }
+        )
     }
 }
 
@@ -156,26 +252,48 @@ private fun DeviceStatusCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Top
             ) {
-                Column {
-                    Text(
-                        text = "DOBBLESHOP",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        text = variant,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    // Device icon
+                    Surface(
+                        shape = androidx.compose.foundation.shape.CircleShape,
+                        color = Color(0xFFE3F2FD),
+                        modifier = Modifier.size(48.dp)
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Icon(
+                                Icons.Default.Pets,
+                                contentDescription = null,
+                                tint = Color(0xFF2196F3),
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
+                    
+                    Spacer(modifier = Modifier.width(12.dp))
+                    
+                    Column {
+                        Text(
+                            text = "DOBBLESHOP",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF2196F3)
+                        )
+                        Text(
+                            text = "NEO VISION",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color(0xFF4FC3F7)
+                        )
+                    }
                 }
                 
                 Surface(
@@ -208,6 +326,7 @@ private fun DeviceStatusCard(
             ) {
                 StatusItem(
                     icon = Icons.Default.BatteryFull,
+                    iconColor = Color(0xFF4CAF50),
                     label = "Batterie",
                     value = "${deviceStatus.batteryPercent}%",
                     status = "OK",
@@ -216,9 +335,10 @@ private fun DeviceStatusCard(
                 
                 StatusItem(
                     icon = Icons.Default.Restaurant,
-                    label = "Trémie croquettes",
-                    value = "Moyen",
-                    detail = "${deviceStatus.foodReservoirGrams}g restants",
+                    iconColor = Color(0xFF2196F3),
+                    label = "Réservoir croquettes",
+                    value = "Plein",
+                    detail = "1.2 kg",
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -231,17 +351,17 @@ private fun DeviceStatusCard(
             ) {
                 StatusItem(
                     icon = Icons.Default.WaterDrop,
-                    label = "Réservoir eau",
+                    iconColor = Color(0xFF00BCD4),
+                    label = "Niveau d'eau",
                     value = "Optimal",
-                    detail = "${deviceStatus.waterReservoirPercent}% - ${deviceStatus.waterReservoirMl}ml",
                     modifier = Modifier.weight(1f)
                 )
                 
                 StatusItem(
-                    icon = Icons.Default.Scale,
-                    label = "Gamelle (HX711)",
-                    value = "${deviceStatus.bowlWeightGrams.toInt()}g",
-                    detail = deviceStatus.bowlStatus.name,
+                    icon = Icons.Default.Restaurant,
+                    iconColor = Color(0xFF2196F3),
+                    label = "Croquettes restantes",
+                    value = "1.2 kg",
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -278,6 +398,7 @@ private fun DeviceStatusCard(
 @Composable
 private fun StatusItem(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
+    iconColor: Color = Color(0xFF2196F3),
     label: String,
     value: String,
     detail: String? = null,
@@ -286,46 +407,57 @@ private fun StatusItem(
 ) {
     Surface(
         modifier = modifier,
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        shape = MaterialTheme.shapes.medium
+        color = Color.White,
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
+        shadowElevation = 1.dp
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(20.dp)
-            )
+            Surface(
+                shape = androidx.compose.foundation.shape.CircleShape,
+                color = iconColor.copy(alpha = 0.1f),
+                modifier = Modifier.size(40.dp)
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = iconColor,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
             
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = Color(0xFF757575)
             )
             
             Text(
                 text = value,
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF212121)
             )
             
             if (detail != null) {
                 Text(
                     text = detail,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = Color(0xFF757575)
                 )
             }
             
             if (status != null) {
+                Spacer(modifier = Modifier.height(4.dp))
                 Surface(
                     color = Color(0xFF4CAF50),
-                    shape = MaterialTheme.shapes.extraSmall
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(4.dp)
                 ) {
                     Text(
-                        text = status,
+                        text = "● $status",
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                         style = MaterialTheme.typography.labelSmall,
                         color = Color.White
@@ -411,35 +543,389 @@ private fun ReservoirLevelsCard(deviceStatus: DeviceStatus) {
 
 @Composable
 private fun ActiveAnimalCard(
-    petName: String,
+    pet: Pet,
     onChangePet: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        shape = RoundedCornerShape(12.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            // Pet avatar
+            Surface(
+                shape = CircleShape,
+                color = Color(0xFFE3F2FD),
+                modifier = Modifier.size(64.dp)
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Text(
+                        text = when(pet.species) {
+                            com.dobbleshop.neovision.data.model.Species.CAT -> "🐱"
+                            com.dobbleshop.neovision.data.model.Species.DOG -> "🐶"
+                        },
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.width(16.dp))
+            
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
                 Text(
                     text = "Animal actif",
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = petName,
+                    text = pet.name,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
+                if (pet.breed?.isNotBlank() == true) {
+                    Text(
+                        text = pet.breed,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                
+                // Daily rations (if available)
+                // TODO: Get from ViewModel
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.padding(top = 4.dp)
+                ) {
+                    Text(
+                        text = "🥣 65g/j",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = "💧 220ml/j",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
             
             TextButton(onClick = onChangePet) {
-                Text("Changer")
+                Text("Changer", color = Color(0xFF2196F3))
+            }
+        }
+    }
+}
+
+@Composable
+private fun AnimalSelectionDialog(
+    petsUiState: PetsUiState,
+    onDismiss: () -> Unit,
+    onSelectPet: (Pet) -> Unit,
+    onAddPet: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.9f),
+            shape = RoundedCornerShape(16.dp),
+            color = Color(0xFFF5F5F5)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                // Header
+                Surface(
+                    color = Color.White,
+                    shadowElevation = 2.dp
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Animaux",
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        IconButton(onClick = onDismiss) {
+                            Icon(Icons.Default.Close, contentDescription = "Fermer")
+                        }
+                    }
+                }
+                
+                // Content
+                when (petsUiState) {
+                    is PetsUiState.Loading -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                    is PetsUiState.Empty -> {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(32.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "Aucun animal",
+                                style = MaterialTheme.typography.headlineSmall,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "Ajoutez un animal pour commencer",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.height(24.dp))
+                            Button(
+                                onClick = onAddPet,
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF2196F3)
+                                )
+                            ) {
+                                Icon(Icons.Default.Add, contentDescription = null)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Ajouter un animal")
+                            }
+                        }
+                    }
+                    is PetsUiState.Success -> {
+                        LazyColumn(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(petsUiState.pets) { pet ->
+                                AnimalSelectionCard(
+                                    pet = pet,
+                                    isActive = petsUiState.pets.indexOf(pet) == 0, // First one is active
+                                    onSelect = { onSelectPet(pet) }
+                                )
+                            }
+                            
+                            item {
+                                Button(
+                                    onClick = onAddPet,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = ButtonDefaults.outlinedButtonColors(),
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF2196F3))
+                                ) {
+                                    Icon(Icons.Default.Add, contentDescription = null, tint = Color(0xFF2196F3))
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text("Ajouter un animal", color = Color(0xFF2196F3))
+                                }
+                            }
+                        }
+                    }
+                    is PetsUiState.Error -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = petsUiState.message,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AnimalSelectionCard(
+    pet: Pet,
+    isActive: Boolean,
+    onSelect: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(enabled = !isActive) { onSelect() },
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isActive) Color(0xFFE3F2FD) else Color.White
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Pet avatar
+                    Surface(
+                        shape = CircleShape,
+                        color = if (isActive) Color(0xFF2196F3).copy(alpha = 0.1f) else Color(0xFFE3F2FD),
+                        modifier = Modifier.size(64.dp)
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Text(
+                                text = when(pet.species) {
+                                    com.dobbleshop.neovision.data.model.Species.CAT -> "🐱"
+                                    com.dobbleshop.neovision.data.model.Species.DOG -> "🐶"
+                                },
+                                style = MaterialTheme.typography.headlineMedium
+                            )
+                        }
+                    }
+                    
+                    Spacer(modifier = Modifier.width(16.dp))
+                    
+                    Column {
+                        Text(
+                            text = pet.name,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        if (pet.breed?.isNotBlank() == true) {
+                            Text(
+                                text = pet.breed,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        Text(
+                            text = "${(pet.ageMonths ?: 0) / 12} ans",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                
+                if (isActive) {
+                    Surface(
+                        color = Color(0xFF4CAF50),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text(
+                            text = "Actif",
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            Divider(color = Color(0xFFE0E0E0))
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            // Pet details grid
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Poids",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = if (pet.weightKg != null) "${pet.weightKg} kg" else "—",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Âge",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = "${(pet.ageMonths ?: 0) / 12}a ${pet.ageMonths}m",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Croquettes / jour",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = "🥣 65g",  // TODO: Calculate from ViewModel
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Eau / jour",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = "💧 220 ml",  // TODO: Calculate from ViewModel
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+            
+            if (!isActive) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    OutlinedButton(
+                        onClick = { /* TODO: View details */ },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.outlinedButtonColors()
+                    ) {
+                        Text("Détails")
+                    }
+                    Button(
+                        onClick = onSelect,
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF2196F3)
+                        )
+                    ) {
+                        Text("Sélectionner")
+                    }
+                }
             }
         }
     }

@@ -23,7 +23,6 @@ sealed class AppDestination(val route: String) {
  */
 val bottomNavDestinations = listOf(
     AppDestination.Dashboard,
-    AppDestination.Pets,
     AppDestination.Feeding,
     AppDestination.Camera,
     AppDestination.Settings
