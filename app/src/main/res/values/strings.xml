@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DOBBLESHOP NEO VISION</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Accueil</string>
+    <string name="nav_pets">Animaux</string>
+    <string name="nav_feeding">Repas</string>
+    <string name="nav_camera">Caméra</string>
+    <string name="nav_settings">Réglages</string>
+    
+    <!-- Dashboard -->
+    <string name="device_online">En ligne</string>
+    <string name="device_offline">Hors ligne</string>
+    <string name="battery">Batterie</string>
+    <string name="food_reservoir">Trémie croquettes</string>
+    <string name="water_reservoir">Réservoir eau</string>
+    <string name="bowl_weight">Gamelle (HX711)</string>
+    <string name="feed_now">Nourrir maintenant</string>
+    <string name="water_now">Eau</string>
+    <string name="camera">Caméra</string>
+    
+    <!-- Status -->
+    <string name="status_ok">OK</string>
+    <string name="status_optimal">Optimal</string>
+    <string name="status_low">Moyen</string>
+    <string name="status_empty">Vide</string>
+    
+    <!-- Sections -->
+    <string name="reservoir_levels">Niveaux des réservoirs</string>
+    <string name="active_pet">Animal actif</string>
+    <string name="recent_activity">Activité récente</string>
+    <string name="history">Historique</string>
+    
+    <!-- Common -->
+    <string name="change">Changer</string>
+    <string name="ration">Ration</string>
+    <string name="loading">Chargement…</string>
+    <string name="error">Erreur</string>
+    <string name="retry">Réessayer</string>
+</resources>

@@ -1,0 +1,35 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Safe zone is the central 72x72; keep artwork within it. -->
+    <!-- Stylized paw print in white on transparent background. -->
+    <group android:translateX="18" android:translateY="18">
+        <!-- Main pad -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M36,52 m-14,0 a14,11 0 1,0 28,0 a14,11 0 1,0 -28,0" />
+        <!-- Top-center toe -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M36,22 m-5,0 a5,7 0 1,0 10,0 a5,7 0 1,0 -10,0" />
+        <!-- Upper-left toe -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M22,28 m-5,0 a5,7 0 1,0 10,0 a5,7 0 1,0 -10,0" />
+        <!-- Upper-right toe -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M50,28 m-5,0 a5,7 0 1,0 10,0 a5,7 0 1,0 -10,0" />
+        <!-- Outer-left toe -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M12,40 m-4,0 a4,6 0 1,0 8,0 a4,6 0 1,0 -8,0" />
+        <!-- Outer-right toe -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M60,40 m-4,0 a4,6 0 1,0 8,0 a4,6 0 1,0 -8,0" />
+    </group>
+</vector>
+
