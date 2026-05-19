@@ -16,6 +16,7 @@ sealed class AppDestination(val route: String) {
     }
     data object DeviceDetail : AppDestination("device_detail")
     data object History : AppDestination("history")
+    data object ReservoirsDetail : AppDestination("reservoirs_detail")
 }
 
 /**

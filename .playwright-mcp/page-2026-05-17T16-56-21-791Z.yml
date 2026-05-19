@@ -1,0 +1,86 @@
+- generic [ref=e2]:
+  - text:                                  
+  - generic [ref=e147]:
+    - generic [ref=e148]:
+      - generic [ref=e149]: 17:56
+      - generic [ref=e151]: 
+    - generic [ref=e152]:
+      - button "" [ref=e153] [cursor=pointer]:
+        - generic [ref=e154]: 
+      - generic [ref=e155]:
+        - generic [ref=e156]: DOBBLESHOP
+        - generic [ref=e157]: NEO VISION
+    - heading "Réservoirs & Gamelle" [level=1] [ref=e158]
+    - generic [ref=e159]:
+      - generic [ref=e160]:
+        - generic [ref=e161]:
+          - generic [ref=e162]: 🥣
+          - generic [ref=e163]:
+            - generic [ref=e164]: Trémie croquettes
+            - generic [ref=e165]: Capteur VL53L0X (ToF) · I2C GPIO 6/7
+          - generic [ref=e166]: Moyen
+        - generic [ref=e167]:
+          - generic [ref=e168]: 62%
+          - generic [ref=e169]:
+            - generic [ref=e170]: 1240g
+            - generic [ref=e171]: restants dans la trémie
+            - generic [ref=e172]: ≈ 19 jours
+      - generic [ref=e175]:
+        - generic [ref=e176]:
+          - generic [ref=e177]: 💧
+          - generic [ref=e178]:
+            - generic [ref=e179]: Réservoir d'eau
+            - generic [ref=e180]: Capteur de niveau
+          - generic [ref=e181]: Optimal
+        - generic [ref=e182]:
+          - generic [ref=e183]: 78%
+          - generic [ref=e184]:
+            - generic [ref=e185]: 1560ml
+            - generic [ref=e186]: restants dans le réservoir
+            - generic [ref=e187]: ≈ 7 jours
+      - generic [ref=e190]:
+        - generic [ref=e191]:
+          - generic [ref=e192]: ⚖️
+          - generic [ref=e193]:
+            - generic [ref=e194]: Gamelle — Pesée temps réel
+            - generic [ref=e195]: HX711 · GPIO 16/17 · Tare dynamique
+        - generic [ref=e196]:
+          - generic [ref=e197]:
+            - generic [ref=e198]: Poids actuel
+            - generic [ref=e199]: 0g
+          - generic [ref=e200]:
+            - generic [ref=e201]: Statut gamelle
+            - generic [ref=e202]: 🍽️ Vide
+          - generic [ref=e203]:
+            - generic [ref=e204]: Bourrage
+            - generic [ref=e205]: ✅ Aucun
+        - generic [ref=e206]:
+          - button " Tare" [ref=e207] [cursor=pointer]:
+            - generic [ref=e208]: 
+            - text: Tare
+          - button " Distribuer" [ref=e209] [cursor=pointer]:
+            - generic [ref=e210]: 
+            - text: Distribuer
+      - generic [ref=e211]:
+        - generic [ref=e212]: Seuils d'alerte
+        - generic [ref=e213]:
+          - generic [ref=e214]:
+            - generic [ref=e215]: Alerte croquettes basse
+            - generic [ref=e216]: "Seuil : 20%"
+          - generic [ref=e217]: Inactif
+        - generic [ref=e218]:
+          - generic [ref=e219]:
+            - generic [ref=e220]: Alerte eau faible
+            - generic [ref=e221]: "Seuil : 15%"
+          - generic [ref=e222]: Inactif
+        - generic [ref=e223]:
+          - generic [ref=e224]:
+            - generic [ref=e225]: Détection bourrage
+            - generic [ref=e226]: "Seuil : Automatique"
+          - generic [ref=e227]: Active
+        - generic [ref=e228]:
+          - generic [ref=e229]:
+            - generic [ref=e230]: Détection plat non vide
+            - generic [ref=e231]: "Seuil : Auto"
+          - generic [ref=e232]: Active (V1.5)
+  - text:   

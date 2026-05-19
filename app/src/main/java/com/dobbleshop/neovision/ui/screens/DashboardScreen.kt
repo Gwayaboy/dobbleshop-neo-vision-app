@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dobbleshop.neovision.data.model.BowlStatus
@@ -37,7 +38,8 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
-    petsViewModel: PetsViewModel = hiltViewModel()
+    petsViewModel: PetsViewModel = hiltViewModel(),
+    onNavigateToReservoirs: () -> Unit = {}
 ) {
     val petsUiState by petsViewModel.uiState.collectAsState()
     var showAnimalDialog by remember { mutableStateOf(false) }
@@ -202,7 +204,10 @@ fun DashboardScreen(
             Spacer(modifier = Modifier.height(16.dp))
             
             // Reservoir levels
-            ReservoirLevelsCard(deviceStatus)
+            ReservoirLevelsCard(
+                deviceStatus = deviceStatus,
+                onNavigateToDetail = onNavigateToReservoirs
+            )
             
             Spacer(modifier = Modifier.height(16.dp))
             
@@ -212,6 +217,11 @@ fun DashboardScreen(
                     pet = activePet,
                     onChangePet = { showAnimalDialog = true }
                 )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                // Recent Activity
+                RecentActivityCard()
             }
         }
     }
@@ -469,10 +479,15 @@ private fun StatusItem(
 }
 
 @Composable
-private fun ReservoirLevelsCard(deviceStatus: DeviceStatus) {
+private fun ReservoirLevelsCard(
+    deviceStatus: DeviceStatus,
+    onNavigateToDetail: () -> Unit = {}
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -485,8 +500,12 @@ private fun ReservoirLevelsCard(deviceStatus: DeviceStatus) {
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
-                IconButton(onClick = { /* TODO */ }) {
-                    Icon(Icons.Default.ChevronRight, contentDescription = "Details")
+                IconButton(onClick = onNavigateToDetail) {
+                    Icon(
+                        Icons.Default.ChevronRight,
+                        contentDescription = "Details",
+                        tint = Color(0xFF2196F3)
+                    )
                 }
             }
             
@@ -497,21 +516,35 @@ private fun ReservoirLevelsCard(deviceStatus: DeviceStatus) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = "Croquettes (VL53L0X)",
-                    style = MaterialTheme.typography.bodyMedium
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        Icons.Default.Circle,
+                        contentDescription = null,
+                        tint = Color(0xFF4CAF50),
+                        modifier = Modifier.size(12.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Croquettes (VL53L0X)",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Black
+                    )
+                }
                 Text(
                     text = "${deviceStatus.foodReservoirPercent}% · ${deviceStatus.foodReservoirGrams}g",
                     style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
             }
             LinearProgressIndicator(
                 progress = { deviceStatus.foodReservoirPercent / 100f },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 4.dp),
+                    .height(6.dp)
+                    .padding(vertical = 2.dp),
+                color = Color(0xFF4CAF50),
+                trackColor = Color(0xFFE8F5E9)
             )
             
             Spacer(modifier = Modifier.height(8.dp))
@@ -521,21 +554,35 @@ private fun ReservoirLevelsCard(deviceStatus: DeviceStatus) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = "Eau",
-                    style = MaterialTheme.typography.bodyMedium
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        Icons.Default.Circle,
+                        contentDescription = null,
+                        tint = Color(0xFF00BCD4),
+                        modifier = Modifier.size(12.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Eau",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Black
+                    )
+                }
                 Text(
                     text = "${deviceStatus.waterReservoirPercent}% · ${deviceStatus.waterReservoirMl}ml",
                     style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
             }
             LinearProgressIndicator(
                 progress = { deviceStatus.waterReservoirPercent / 100f },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 4.dp),
+                    .height(6.dp)
+                    .padding(vertical = 2.dp),
+                color = Color(0xFF00BCD4),
+                trackColor = Color(0xFFE0F7FA)
             )
         }
     }
@@ -617,9 +664,161 @@ private fun ActiveAnimalCard(
                 }
             }
             
-            TextButton(onClick = onChangePet) {
-                Text("Changer", color = Color(0xFF2196F3))
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                TextButton(onClick = onChangePet) {
+                    Text("Changer", color = Color(0xFF2196F3))
+                }
+                
+                OutlinedButton(
+                    onClick = { /* Show ration details */ },
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = Color(0xFF2196F3)
+                    ),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF2196F3)),
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Restaurant,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Ration", fontSize = 12.sp)
+                }
             }
+        }
+    }
+}
+
+@Composable
+private fun RecentActivityCard() {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Activité récente",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+                
+                TextButton(onClick = { /* Show history */ }) {
+                    Text("Historique", color = Color(0xFF2196F3), fontWeight = FontWeight.Bold)
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            // Mock activity items
+            ActivityItem(
+                icon = "⚠️",
+                title = "Bourrage (résolu)",
+                time = "11:12",
+                bgColor = Color(0xFFFFE0B2)
+            )
+            
+            ActivityItem(
+                icon = "💧",
+                title = "150ml distribués",
+                time = "20:00",
+                bgColor = Color(0xFFB2EBF2)
+            )
+            
+            ActivityItem(
+                icon = "💧",
+                title = "100ml distribués",
+                time = "16:00",
+                bgColor = Color(0xFFB2EBF2)
+            )
+            
+            ActivityItem(
+                icon = "🥣",
+                title = "80g servis (réel: 80g · HX711)",
+                time = "19:30",
+                bgColor = Color(0xFFC8E6C9)
+            )
+            
+            ActivityItem(
+                icon = "🔐",
+                title = "Présence détectée — 92%",
+                time = "14:15",
+                bgColor = Color(0xFFFFF9C4),
+                hasCamera = true
+            )
+        }
+    }
+}
+
+@Composable
+private fun ActivityItem(
+    icon: String,
+    title: String,
+    time: String,
+    bgColor: Color,
+    hasCamera: Boolean = false
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.weight(1f)
+        ) {
+            Surface(
+                modifier = Modifier.size(36.dp),
+                shape = CircleShape,
+                color = bgColor
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Text(
+                        text = icon,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+            }
+            
+            Column {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Medium
+                )
+                Text(
+                    text = time,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray,
+                    fontSize = 12.sp
+                )
+            }
+        }
+        
+        if (hasCamera) {
+            Text(
+                text = "📸",
+                style = MaterialTheme.typography.titleMedium
+            )
         }
     }
 }

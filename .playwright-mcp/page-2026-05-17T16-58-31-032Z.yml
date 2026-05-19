@@ -1,0 +1,115 @@
+- generic [ref=e2]:
+  - text:               
+  - generic [ref=e480]:
+    - generic [ref=e481]:
+      - generic [ref=e482]: 17:58
+      - generic [ref=e484]: 
+    - generic [ref=e485]:
+      - heading "Repas" [level=1] [ref=e486]
+      - button "" [ref=e487] [cursor=pointer]:
+        - generic [ref=e488]: 
+    - generic [ref=e489]:
+      - generic [ref=e490] [cursor=pointer]:
+        - generic [ref=e491]: 🐱
+        - generic [ref=e492]:
+          - generic [ref=e493]: Animal actif
+          - generic [ref=e494]: Léo
+        - generic [ref=e496]: 
+      - generic [ref=e497]:
+        - generic [ref=e498]: Distribution journalière
+        - generic [ref=e499]:
+          - generic [ref=e500]:
+            - generic [ref=e501]: 🥣 Croquettes servies
+            - generic [ref=e502]: 200g / 65g
+            - generic [ref=e505]: "Gamelle actuelle : 0g (HX711)"
+          - generic [ref=e506]:
+            - generic [ref=e507]: 💧 Eau distribuée
+            - generic [ref=e508]: 550ml / 220ml
+      - generic [ref=e511]:
+        - button "🥣 Croquettes" [ref=e512] [cursor=pointer]
+        - button "💧 Eau" [ref=e513] [cursor=pointer]
+      - generic [ref=e514]:
+        - generic [ref=e516]:
+          - generic [ref=e517]: 🥣
+          - generic [ref=e518]:
+            - generic [ref=e519]: Prochain repas
+            - generic [ref=e520]: 08:00
+          - generic [ref=e521]: 80g
+        - generic [ref=e522]:
+          - generic [ref=e523]: Distribution manuelle
+          - generic [ref=e524]:
+            - generic [ref=e525]: 🥣 Portion
+            - generic [ref=e526]:
+              - button "−" [ref=e527] [cursor=pointer]
+              - generic [ref=e528]: 80g
+              - button "+" [ref=e529] [cursor=pointer]
+          - button " Distribuer 80g" [ref=e530] [cursor=pointer]:
+            - generic [ref=e531]: 
+            - text: Distribuer 80g
+        - generic [ref=e532]:
+          - generic [ref=e533]:
+            - generic [ref=e534]: Planning repas (DS3231)
+            - button "+ Ajouter" [ref=e535] [cursor=pointer]
+          - generic [ref=e536]:
+            - generic [ref=e537]:
+              - generic [ref=e538]: 🥣
+              - generic [ref=e539]:
+                - generic [ref=e540]: Matin — 08:00
+                - generic [ref=e541]: 80g
+            - generic [ref=e542]:
+              - checkbox [checked]
+          - generic [ref=e544]:
+            - generic [ref=e545]:
+              - generic [ref=e546]: 🥣
+              - generic [ref=e547]:
+                - generic [ref=e548]: Midi — 12:30
+                - generic [ref=e549]: 40g
+            - generic [ref=e550]:
+              - checkbox [checked]
+          - generic [ref=e552]:
+            - generic [ref=e553]:
+              - generic [ref=e554]: 🥣
+              - generic [ref=e555]:
+                - generic [ref=e556]: Soir — 18:30
+                - generic [ref=e557]: 80g
+            - generic [ref=e558]:
+              - checkbox [checked]
+          - generic [ref=e560]:
+            - generic [ref=e561]:
+              - generic [ref=e562]: 🥣
+              - generic [ref=e563]:
+                - generic [ref=e564]: Nuit — 22:00
+                - generic [ref=e565]: Eau seulement
+            - generic [ref=e566]:
+              - checkbox
+          - generic [ref=e568]:
+            - generic [ref=e569] [cursor=pointer]:
+              - generic [ref=e570]: Matin
+              - generic [ref=e571]: 08:00
+              - generic [ref=e572]: 80g
+            - generic [ref=e573] [cursor=pointer]:
+              - generic [ref=e574]: Midi
+              - generic [ref=e575]: 12:30
+              - generic [ref=e576]: 40g
+            - generic [ref=e577] [cursor=pointer]:
+              - generic [ref=e578]: Soir
+              - generic [ref=e579]: 18:30
+              - generic [ref=e580]: 80g
+            - generic [ref=e581] [cursor=pointer]:
+              - generic [ref=e582]: Nuit
+              - generic [ref=e583]: 22:00
+              - generic [ref=e584]: —
+    - navigation [ref=e585]:
+      - button " Accueil" [ref=e586] [cursor=pointer]:
+        - generic [ref=e587]: 
+        - generic [ref=e588]: Accueil
+      - button " Repas" [ref=e589] [cursor=pointer]:
+        - generic [ref=e590]: 
+        - generic [ref=e591]: Repas
+      - button " Caméra" [ref=e592] [cursor=pointer]:
+        - generic [ref=e593]: 
+        - generic [ref=e594]: Caméra
+      - button " Réglages" [ref=e595] [cursor=pointer]:
+        - generic [ref=e596]: 
+        - generic [ref=e597]: Réglages
+  - text:                                  

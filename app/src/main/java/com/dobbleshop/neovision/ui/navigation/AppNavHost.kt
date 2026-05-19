@@ -9,6 +9,7 @@ import com.dobbleshop.neovision.ui.screens.DashboardScreen
 import com.dobbleshop.neovision.ui.screens.CameraScreen
 import com.dobbleshop.neovision.ui.screens.FeedingScreen
 import com.dobbleshop.neovision.ui.screens.SettingsScreen
+import com.dobbleshop.neovision.ui.screens.ReservoirsDetailScreen
 
 @Composable
 fun AppNavHost(
@@ -21,7 +22,11 @@ fun AppNavHost(
         modifier = modifier
     ) {
         composable(AppDestination.Dashboard.route) {
-            DashboardScreen()
+            DashboardScreen(
+                onNavigateToReservoirs = {
+                    navController.navigate(AppDestination.ReservoirsDetail.route)
+                }
+            )
         }
         
         composable(AppDestination.Feeding.route) {
@@ -34,6 +39,14 @@ fun AppNavHost(
         
         composable(AppDestination.Settings.route) {
             SettingsScreen()
+        }
+        
+        composable(AppDestination.ReservoirsDetail.route) {
+            ReservoirsDetailScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
         
         // Add more destinations as we build them

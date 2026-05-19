@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.shape.CircleShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,6 +63,9 @@ fun CameraScreen() {
             
             // Hardware Info
             HardwareInfoCard()
+            
+            // Security Section
+            SecurityCard()
         }
     }
 }
@@ -70,12 +75,13 @@ fun CameraFeedCard() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(16f / 9f)
+            .aspectRatio(16f / 9f),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Black
+        )
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             // Placeholder for video feed
@@ -84,46 +90,60 @@ fun CameraFeedCard() {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Default.Videocam,
+                    imageVector = Icons.Default.PlayCircle,
                     contentDescription = null,
                     tint = Color.White.copy(alpha = 0.6f),
                     modifier = Modifier.size(64.dp)
                 )
                 Text(
-                    text = "Flux vidéo H.264",
+                    text = "Flux H.264 · RPi Zero 2W",
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White.copy(alpha = 0.8f)
                 )
-                Text(
-                    text = "Raspberry Pi Camera Module 3",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White.copy(alpha = 0.6f)
-                )
             }
             
-            // Live indicator
+            // EN DIRECT badge
             Surface(
                 modifier = Modifier
                     .align(Alignment.TopStart)
-                    .padding(16.dp),
+                    .padding(12.dp),
+                color = Color(0xFF4CAF50),
+                shape = RoundedCornerShape(6.dp)
+            ) {
+                Text(
+                    text = "EN DIRECT",
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 11.sp
+                )
+            }
+            
+            // REC badge
+            Surface(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(12.dp),
                 color = Color.Red,
-                shape = MaterialTheme.shapes.small
+                shape = RoundedCornerShape(6.dp)
             ) {
                 Row(
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(8.dp)
-                            .background(Color.White, shape = MaterialTheme.shapes.extraSmall)
+                            .size(6.dp)
+                            .background(Color.White, shape = CircleShape)
                     )
                     Text(
-                        text = "EN DIRECT",
+                        text = "REC",
                         style = MaterialTheme.typography.labelSmall,
                         color = Color.White,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 11.sp
                     )
                 }
             }
@@ -312,67 +332,200 @@ fun HardwareInfoCard() {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+            containerColor = Color(0xFF2C2C2E)
+        ),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(
+                        text = "Salon — Caméra 1",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                    
+                    Surface(
+                        color = Color(0xFF4CAF50),
+                        shape = RoundedCornerShape(4.dp),
+                        modifier = Modifier.padding(top = 8.dp)
+                    ) {
+                        Text(
+                            text = "En ligne",
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    
+                    Text(
+                        text = "Wi-Fi : excellent (-42 dBm)",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.White.copy(alpha = 0.7f),
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
+                
+                // Control buttons grid
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        IconButton(
+                            onClick = { /* Action */ },
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Icon(Icons.Default.Refresh, contentDescription = null, tint = Color.White)
+                        }
+                        IconButton(
+                            onClick = { /* Action */ },
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Icon(Icons.Default.Info, contentDescription = null, tint = Color.White)
+                        }
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        IconButton(
+                            onClick = { /* Action */ },
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Icon(Icons.Default.Download, contentDescription = null, tint = Color.White)
+                        }
+                        IconButton(
+                            onClick = { /* Action */ },
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Icon(Icons.Default.Settings, contentDescription = null, tint = Color.White)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SecurityCard() {
+    var selectedMode by remember { mutableStateOf("Auto") }
+    
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFF2C2C2E)
+        ),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Matériel",
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold
+                text = "🛡️ Sécurité domicile (mmWave · RPi UART)",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
             )
             
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "Caméra:",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-                )
-                Text(
-                    text = "RPI Camera Module 3",
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Medium
-                )
+                Column {
+                    Text(
+                        text = "Mode",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.White.copy(alpha = 0.6f)
+                    )
+                    Text(
+                        text = "Automatique",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
+                
+                Surface(
+                    color = Color(0xFF4CAF50).copy(alpha = 0.2f),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "✅",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                        Text(
+                            text = "Aucune",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color(0xFF4CAF50),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
             }
             
+            // Mode buttons
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text(
-                    text = "Microphone:",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-                )
-                Text(
-                    text = "INMP441",
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Medium
-                )
+                listOf(
+                    "⏸ Off" to "Off",
+                    "🏠 Home" to "Home",
+                    "🚨 Absent" to "Absent",
+                    "🤖 Auto" to "Auto"
+                ).forEach { (label, mode) ->
+                    OutlinedButton(
+                        onClick = { selectedMode = mode },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            containerColor = if (selectedMode == mode) Color(0xFF3A4D6E) else Color.Transparent,
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 10.sp
+                        )
+                    }
+                }
             }
             
-            Row(
+            // View security events button
+            OutlinedButton(
+                onClick = { /* View events */ },
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = Color(0xFF64B5F6)
+                ),
+                shape = RoundedCornerShape(8.dp)
             ) {
-                Text(
-                    text = "Haut-parleur:",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                Icon(
+                    Icons.Default.History,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp)
                 )
-                Text(
-                    text = "MAX98357A I2S",
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Medium
-                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Voir les événements sécurité")
             }
         }
     }

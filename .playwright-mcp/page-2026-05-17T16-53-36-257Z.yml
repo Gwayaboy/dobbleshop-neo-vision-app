@@ -1,0 +1,26 @@
+- generic [ref=e2]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: 🐾
+      - generic [ref=e7]: DOBBLESHOP
+      - generic [ref=e8]: NEO VISION
+      - generic [ref=e9]: Distributeur connecté premium
+    - generic [ref=e10]:
+      - generic [ref=e11]: Connexion
+      - generic [ref=e12]: Bienvenue sur DOBBLESHOP NEO VISION
+      - generic [ref=e13]:
+        - generic [ref=e14]: ADRESSE EMAIL
+        - textbox "vous@exemple.fr" [ref=e15]: carltacita@gmail.com
+      - generic [ref=e16]:
+        - generic [ref=e17]: MOT DE PASSE
+        - textbox "••••••••" [ref=e18]: chienchat06
+      - generic [ref=e19]: Mot de passe oublié ?
+      - button " Se connecter" [ref=e20] [cursor=pointer]:
+        - generic [ref=e21]: 
+        - text: Se connecter
+      - generic [ref=e22]: Pas encore de compte ? S'inscrire
+      - generic [ref=e23]:
+        - generic [ref=e24]: COMPTE DE DÉMONSTRATION
+        - generic [ref=e25]: carltacita@gmail.com
+        - generic [ref=e26]: chienchat06
+  - text:                                 

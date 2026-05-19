@@ -16,29 +16,31 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
+import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedingScreen() {
     var selectedPortion by remember { mutableStateOf(80) }
+    var selectedTab by remember { mutableStateOf(0) } // 0 = Croquettes, 1 = Eau
     
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        "Repas & Planification",
-                        color = Color.White
-                    )
+                    Text("Repas", color = Color.Black)
+                },
+                actions = {
+                    IconButton(onClick = { /* Notifications */ }) {
+                        Icon(Icons.Default.Notifications, contentDescription = "Notifications")
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF1C1C1E)
+                    containerColor = Color.White
                 )
             )
         },
-        containerColor = Color(0xFF000000)
+        containerColor = Color(0xFFF5F5F5)
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -48,80 +50,57 @@ fun FeedingScreen() {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Daily Summary Card
-            DailySummaryCard()
+            // Animal Actif Card
+            ActiveAnimalRepasCard()
             
-            // Active Animal Card
-            ActiveAnimalCard()
+            // Distribution journalière Card
+            DailyDistributionCard()
             
-            // Manual Distribution Section
-            ManualDistributionCard(
-                selectedPortion = selectedPortion,
-                onPortionChange = { selectedPortion = it }
-            )
-            
-            // Scheduled Meals Section
-            ScheduledMealsCard()
-        }
-    }
-}
-
-@Composable
-fun DailySummaryCard() {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = Color(0xFF3A4D6E),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(24.dp),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = "240g",
-                    style = MaterialTheme.typography.displaySmall,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
+            // Tabs for Croquettes / Eau
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                FilterChip(
+                    selected = selectedTab == 0,
+                    onClick = { selectedTab = 0 },
+                    label = { Text("🥣 Croquettes") },
+                    modifier = Modifier.weight(1f)
                 )
-                Text(
-                    text = "Servi aujourd'hui",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White.copy(alpha = 0.7f)
+                FilterChip(
+                    selected = selectedTab == 1,
+                    onClick = { selectedTab = 1 },
+                    label = { Text("💧 Eau") },
+                    modifier = Modifier.weight(1f)
                 )
             }
             
-            Divider(
-                modifier = Modifier
-                    .height(56.dp)
-                    .width(1.dp),
-                color = Color.White.copy(alpha = 0.3f)
-            )
-            
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = "3",
-                    style = MaterialTheme.typography.displaySmall,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
+            if (selectedTab == 0) {
+                // Prochain Repas
+                NextMealCard()
+                
+                // Manual Distribution
+                ManualDistributionLightCard(
+                    selectedPortion = selectedPortion,
+                    onPortionChange = { selectedPortion = it }
                 )
-                Text(
-                    text = "Distributions",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White.copy(alpha = 0.7f)
-                )
+                
+                // Scheduled Meals
+                ScheduledMealsLightCard()
+            } else {
+                // Water info card
+                WaterInfoCard()
             }
         }
     }
 }
 
 @Composable
-fun ActiveAnimalCard() {
-    Surface(
+fun ActiveAnimalRepasCard() {
+    Card(
         modifier = Modifier.fillMaxWidth(),
-        color = Color(0xFF2C2C2E),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         shape = RoundedCornerShape(16.dp)
     ) {
         Row(
@@ -135,52 +114,185 @@ fun ActiveAnimalCard() {
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Surface(
-                    modifier = Modifier.size(48.dp),
-                    shape = CircleShape,
-                    color = Color(0xFF3A4D6E)
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Pets,
-                            contentDescription = null,
-                            tint = Color.White
-                        )
-                    }
-                }
+                Text(
+                    text = "🐱",
+                    style = MaterialTheme.typography.displaySmall,
+                    modifier = Modifier.size(48.dp)
+                )
                 
                 Column {
                     Text(
                         text = "Animal actif",
                         style = MaterialTheme.typography.labelMedium,
-                        color = Color.White.copy(alpha = 0.6f)
+                        color = Color.Gray,
+                        fontSize = 12.sp
                     )
                     Text(
                         text = "Léo",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = Color.Black
                     )
                 }
             }
             
-            TextButton(onClick = { /* Change animal */ }) {
-                Text("Changer", color = Color(0xFF64B5F6))
-            }
+            Icon(
+                Icons.Default.ChevronRight,
+                contentDescription = "Details",
+                tint = Color(0xFF2196F3)
+            )
         }
     }
 }
 
 @Composable
-fun ManualDistributionCard(
+fun DailyDistributionCard() {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = "Distribution journalière",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+            
+            // Croquettes servies
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "🥣 Croquettes servies",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Black,
+                        fontSize = 13.sp
+                    )
+                    Text(
+                        text = "200g / 65g",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                }
+                LinearProgressIndicator(
+                    progress = { 200f / 65f }, // Over target
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(6.dp),
+                    color = Color(0xFFFF9800), // Orange for over
+                    trackColor = Color(0xFFFFE0B2)
+                )
+            }
+            
+            // Eau distribuée
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "💧 Eau distribuée",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Black,
+                        fontSize = 13.sp
+                    )
+                    Text(
+                        text = "550ml / 220ml",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                }
+                LinearProgressIndicator(
+                    progress = { 550f / 220f }, // Over target
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(6.dp),
+                    color = Color(0xFF00BCD4),
+                    trackColor = Color(0xFFB2EBF2)
+                )
+            }
+            
+            Text(
+                text = "Gamelle actuelle : 0g (HX711)",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray,
+                fontSize = 12.sp
+            )
+        }
+    }
+}
+
+@Composable
+fun NextMealCard() {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "🥣",
+                    style = MaterialTheme.typography.displaySmall
+                )
+                
+                Column {
+                    Text(
+                        text = "Prochain repas",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray,
+                        fontSize = 13.sp
+                    )
+                    Text(
+                        text = "08:00",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                }
+            }
+            
+            Text(
+                text = "80g",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+        }
+    }
+}
+
+@Composable
+fun ManualDistributionLightCard(
     selectedPortion: Int,
     onPortionChange: (Int) -> Unit
 ) {
-    Surface(
+    Card(
         modifier = Modifier.fillMaxWidth(),
-        color = Color(0xFF2C2C2E),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         shape = RoundedCornerShape(16.dp)
     ) {
         Column(
@@ -193,7 +305,7 @@ fun ManualDistributionCard(
                 text = "Distribution manuelle",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = Color.Black
             )
             
             // Portion Control
@@ -203,63 +315,44 @@ fun ManualDistributionCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Portion",
+                    text = "🥣 Portion",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = Color.White
+                    color = Color.Black
                 )
                 
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    FilledIconButton(
+                    OutlinedIconButton(
                         onClick = { if (selectedPortion > 20) onPortionChange(selectedPortion - 10) },
-                        modifier = Modifier.size(40.dp),
-                        colors = IconButtonDefaults.filledIconButtonColors(
-                            containerColor = Color(0xFF64B5F6)
-                        )
+                        modifier = Modifier.size(36.dp)
                     ) {
-                        Icon(Icons.Default.Remove, contentDescription = "Decrease", tint = Color.White)
+                        Icon(Icons.Default.Remove, contentDescription = "Decrease", tint = Color(0xFF2196F3))
                     }
                     
                     Text(
                         text = "${selectedPortion}g",
-                        style = MaterialTheme.typography.headlineSmall,
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = Color.Black
                     )
                     
-                    FilledIconButton(
+                    OutlinedIconButton(
                         onClick = { if (selectedPortion < 200) onPortionChange(selectedPortion + 10) },
-                        modifier = Modifier.size(40.dp),
-                        colors = IconButtonDefaults.filledIconButtonColors(
-                            containerColor = Color(0xFF64B5F6)
-                        )
+                        modifier = Modifier.size(36.dp)
                     ) {
-                        Icon(Icons.Default.Add, contentDescription = "Increase", tint = Color.White)
+                        Icon(Icons.Default.Add, contentDescription = "Increase", tint = Color(0xFF2196F3))
                     }
                 }
             }
-            
-            // Slider
-            Slider(
-                value = selectedPortion.toFloat(),
-                onValueChange = { onPortionChange(it.toInt()) },
-                valueRange = 20f..200f,
-                steps = 17,
-                colors = SliderDefaults.colors(
-                    thumbColor = Color(0xFF64B5F6),
-                    activeTrackColor = Color(0xFF64B5F6),
-                    inactiveTrackColor = Color(0xFF424242)
-                )
-            )
             
             // Distribute Button
             Button(
                 onClick = { /* Distribute food */ },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF64B5F6)
+                    containerColor = Color(0xFF2196F3)
                 ),
                 shape = RoundedCornerShape(12.dp),
                 contentPadding = PaddingValues(16.dp)
@@ -271,22 +364,26 @@ fun ManualDistributionCard(
                     tint = Color.White
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Distribuer maintenant", color = Color.White, fontWeight = FontWeight.Bold)
+                Text("Distribuer ${selectedPortion}g", color = Color.White, fontWeight = FontWeight.Bold)
             }
         }
     }
 }
 
 @Composable
-fun ScheduledMealsCard() {
+fun ScheduledMealsLightCard() {
     val mockSchedules = listOf(
-        ScheduledMeal("08:00", 80, true),
-        ScheduledMeal("13:00", 60, false),
-        ScheduledMeal("19:00", 100, false)
+        ScheduledMeal("Matin — 08:00", 80, true),
+        ScheduledMeal("Midi — 12:30", 40, true),
+        ScheduledMeal("Soir — 18:30", 80, true),
+        ScheduledMeal("Nuit — 22:00", 0, false, waterOnly = true)
     )
     
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Column(
             modifier = Modifier
@@ -300,29 +397,70 @@ fun ScheduledMealsCard() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Planification",
+                    text = "Planning repas (DS3231)",
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
                 
-                IconButton(onClick = { /* Add schedule */ }) {
-                    Icon(Icons.Default.Add, contentDescription = "Ajouter")
+                TextButton(onClick = { /* Add schedule */ }) {
+                    Text("+ Ajouter", color = Color(0xFF2196F3), fontWeight = FontWeight.Bold)
                 }
             }
             
             mockSchedules.forEach { schedule ->
-                ScheduledMealItem(schedule)
+                ScheduledMealItemLight(schedule)
+            }
+            
+            // Quick chips
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                listOf("Matin", "Midi", "Soir", "Nuit").forEachIndexed { index, label ->
+                    val time = listOf("08:00", "12:30", "18:30", "22:00")[index]
+                    val amount = listOf("80g", "40g", "80g", "—")[index]
+                    
+                    Surface(
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(8.dp),
+                        color = Color(0xFFF5F5F5),
+                        tonalElevation = 1.dp
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(8.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = label,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color.Gray,
+                                fontSize = 11.sp
+                            )
+                            Text(
+                                text = time,
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black
+                            )
+                            Text(
+                                text = amount,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray,
+                                fontSize = 11.sp
+                            )
+                        }
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-fun ScheduledMealItem(schedule: ScheduledMeal) {
+fun ScheduledMealItemLight(schedule: ScheduledMeal) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -330,36 +468,98 @@ fun ScheduledMealItem(schedule: ScheduledMeal) {
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Default.Schedule,
-                contentDescription = null,
-                tint = if (schedule.isActive) MaterialTheme.colorScheme.primary
-                       else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+            Text(
+                text = "🥣",
+                style = MaterialTheme.typography.headlineSmall
             )
             
             Column {
                 Text(
                     text = schedule.time,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
                 Text(
-                    text = "${schedule.portionGrams}g",
+                    text = if (schedule.waterOnly) "Eau seulement" else "${schedule.portionGrams}g",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    color = Color.Gray,
+                    fontSize = 13.sp
                 )
             }
         }
         
         Switch(
             checked = schedule.isActive,
-            onCheckedChange = { /* Toggle schedule */ }
+            onCheckedChange = { /* Toggle schedule */ },
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = Color(0xFF2196F3),
+                checkedTrackColor = Color(0xFF64B5F6)
+            )
         )
+    }
+    
+    if (schedule != mockSchedules.last()) {
+        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+    }
+}
+
+private val mockSchedules = listOf(
+    ScheduledMeal("Matin — 08:00", 80, true),
+    ScheduledMeal("Midi — 12:30", 40, true),
+    ScheduledMeal("Soir — 18:30", 80, true),
+    ScheduledMeal("Nuit — 22:00", 0, false, waterOnly = true)
+)
+
+@Composable
+fun WaterInfoCard() {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = "💧",
+                style = MaterialTheme.typography.displayLarge
+            )
+            
+            Text(
+                text = "Gestion de l'eau",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+            
+            Text(
+                text = "Distribution automatique basée sur la consommation journalière de l'animal",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+            
+            Button(
+                onClick = { /* Configure water */ },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF00BCD4)
+                )
+            ) {
+                Text("Configurer")
+            }
+        }
     }
 }
 
 data class ScheduledMeal(
     val time: String,
     val portionGrams: Int,
-    val isActive: Boolean
+    val isActive: Boolean,
+    val waterOnly: Boolean = false
 )
