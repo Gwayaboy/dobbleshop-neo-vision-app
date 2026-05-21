@@ -39,16 +39,51 @@ import java.util.*
 @Composable
 fun DashboardScreen(
     petsViewModel: PetsViewModel = hiltViewModel(),
-    onNavigateToReservoirs: () -> Unit = {}
+    onNavigateToReservoirs: () -> Unit = {},
+    onNavigateToHistory: () -> Unit = {}
 ) {
     val petsUiState by petsViewModel.uiState.collectAsState()
     var showAnimalDialog by remember { mutableStateOf(false) }
     var showAddPetDialog by remember { mutableStateOf(false) }
     
-    // Get the first active pet or first pet in list
+    // Get the first active pet or create a mock pet
     val activePet = when (val state = petsUiState) {
-        is PetsUiState.Success -> state.pets.firstOrNull()
-        else -> null
+        is PetsUiState.Success -> {
+            if (state.pets.isEmpty()) {
+                // Mock pet when database is empty
+                Pet(
+                    id = "0",
+                    name = "Léo",
+                    species = com.dobbleshop.neovision.data.model.Species.CAT,
+                    breed = "Chat Domestique",
+                    weightKg = 4.5f,
+                    ageMonths = 36,
+                    sex = com.dobbleshop.neovision.data.model.Sex.MALE,
+                    isSterilized = true,
+                    activityLevel = com.dobbleshop.neovision.data.model.ActivityLevel.NORMAL,
+                    nutritionalGoal = com.dobbleshop.neovision.data.model.NutritionalGoal.MAINTAIN,
+                    deviceId = "dev_001"
+                )
+            } else {
+                state.pets.firstOrNull()
+            }
+        }
+        else -> {
+            // Mock pet for other states
+            Pet(
+                    id = "0",
+                    name = "Léo",
+                    species = com.dobbleshop.neovision.data.model.Species.CAT,
+                    breed = "Chat Domestique",
+                    weightKg = 4.5f,
+                    ageMonths = 36,
+                    sex = com.dobbleshop.neovision.data.model.Sex.MALE,
+                    isSterilized = true,
+                    activityLevel = com.dobbleshop.neovision.data.model.ActivityLevel.NORMAL,
+                    nutritionalGoal = com.dobbleshop.neovision.data.model.NutritionalGoal.MAINTAIN,
+                    deviceId = "dev_001"
+                )
+        }
     }
     
     // Mock device status - in real app would come from ViewModel
@@ -211,18 +246,18 @@ fun DashboardScreen(
             
             Spacer(modifier = Modifier.height(16.dp))
             
-            // Active animal (mock)
-            if (activePet != null) {
+            // Active animal
+            activePet?.let {
                 ActiveAnimalCard(
-                    pet = activePet,
-                    onChangePet = { showAnimalDialog = true }
+                    pet = it,
+                onChangePet = { showAnimalDialog = true }
                 )
-                
-                Spacer(modifier = Modifier.height(16.dp))
-                
-                // Recent Activity
-                RecentActivityCard()
             }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Recent Activity
+            RecentActivityCard(onNavigateToHistory = onNavigateToHistory)
         }
     }
     
@@ -694,7 +729,7 @@ private fun ActiveAnimalCard(
 }
 
 @Composable
-private fun RecentActivityCard() {
+private fun RecentActivityCard(onNavigateToHistory: () -> Unit = {}) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
@@ -718,7 +753,7 @@ private fun RecentActivityCard() {
                     color = Color.Black
                 )
                 
-                TextButton(onClick = { /* Show history */ }) {
+                TextButton(onClick = onNavigateToHistory) {
                     Text("Historique", color = Color(0xFF2196F3), fontWeight = FontWeight.Bold)
                 }
             }
