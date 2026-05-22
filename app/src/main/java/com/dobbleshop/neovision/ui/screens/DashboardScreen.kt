@@ -28,6 +28,8 @@ import com.dobbleshop.neovision.data.model.Pet
 import com.dobbleshop.neovision.ui.components.AddPetDialog
 import com.dobbleshop.neovision.ui.viewmodel.PetsViewModel
 import com.dobbleshop.neovision.ui.viewmodel.PetsUiState
+import com.dobbleshop.neovision.ui.viewmodel.DashboardViewModel
+import com.dobbleshop.neovision.data.connectivity.ConnectionState
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,12 +41,24 @@ import java.util.*
 @Composable
 fun DashboardScreen(
     petsViewModel: PetsViewModel = hiltViewModel(),
+    dashboardViewModel: DashboardViewModel = hiltViewModel(),
     onNavigateToReservoirs: () -> Unit = {},
     onNavigateToHistory: () -> Unit = {}
 ) {
     val petsUiState by petsViewModel.uiState.collectAsState()
+    val dashboardUiState by dashboardViewModel.uiState.collectAsState()
+    val connectionState by dashboardViewModel.connectionState.collectAsState()
+    val isNetworkAvailable by dashboardViewModel.isNetworkAvailable.collectAsState()
+    
     var showAnimalDialog by remember { mutableStateOf(false) }
     var showAddPetDialog by remember { mutableStateOf(false) }
+    
+    // Auto-connect to device when screen loads
+    LaunchedEffect(Unit) {
+        if (connectionState is ConnectionState.Disconnected) {
+            dashboardViewModel.connectToDevice("dev_001", preferBluetooth = false)
+        }
+    }
     
     // Get the first active pet or create a mock pet
     val activePet = when (val state = petsUiState) {
@@ -250,7 +264,10 @@ fun DashboardScreen(
             activePet?.let {
                 ActiveAnimalCard(
                     pet = it,
-                onChangePet = { showAnimalDialog = true }
+                    onChangePet = { showAnimalDialog = true },
+                    onQuickFeed = {
+                        dashboardViewModel.quickFeed(grams = 80)
+                    }
                 )
             }
             
@@ -626,7 +643,8 @@ private fun ReservoirLevelsCard(
 @Composable
 private fun ActiveAnimalCard(
     pet: Pet,
-    onChangePet: () -> Unit
+    onChangePet: () -> Unit,
+    onQuickFeed: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -708,7 +726,7 @@ private fun ActiveAnimalCard(
                 }
                 
                 OutlinedButton(
-                    onClick = { /* Show ration details */ },
+                    onClick = onQuickFeed,
                     colors = ButtonDefaults.outlinedButtonColors(
                         contentColor = Color(0xFF2196F3)
                     ),

@@ -16,12 +16,50 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.CircleShape
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.dobbleshop.neovision.ui.viewmodel.CameraViewModel
+import com.dobbleshop.neovision.data.api.SecurityMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CameraScreen() {
-    var isMicEnabled by remember { mutableStateOf(false) }
-    var isSpeakerEnabled by remember { mutableStateOf(true) }
+fun CameraScreen(
+    viewModel: CameraViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    val streamSession by viewModel.streamSession.collectAsState()
+    val isMicEnabled by viewModel.isMicEnabled.collectAsState()
+    val isSpeakerEnabled by viewModel.isSpeakerEnabled.collectAsState()
+    val securityMode by viewModel.securityMode.collectAsState()
+    
+    // Auto-start camera stream when screen loads
+    LaunchedEffect(Unit) {
+        if (streamSession == null && !uiState.isStreaming) {
+            viewModel.startCameraStream("dev_001")
+        }
+    }
+    
+    // Cleanup when leaving screen
+    DisposableEffect(Unit) {
+        onDispose {
+            // Stream will be stopped automatically
+        }
+    }
+    
+    val snackbarHostState = remember { SnackbarHostState() }
+    
+    LaunchedEffect(uiState.successMessage) {
+        uiState.successMessage?.let { message ->
+            snackbarHostState.showSnackbar(message)
+            viewModel.clearSuccessMessage()
+        }
+    }
+    
+    LaunchedEffect(uiState.errorMessage) {
+        uiState.errorMessage?.let { message ->
+            snackbarHostState.showSnackbar(message)
+            viewModel.clearErrorMessage()
+        }
+    }
     
     Scaffold(
         topBar = {
@@ -37,6 +75,7 @@ fun CameraScreen() {
                 )
             )
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         containerColor = Color(0xFF000000)
     ) { paddingValues ->
         Column(
@@ -56,16 +95,21 @@ fun CameraScreen() {
             // Audio Section
             AudioControlsCard(
                 isMicEnabled = isMicEnabled,
-                onMicToggle = { isMicEnabled = !isMicEnabled },
+                onMicToggle = { viewModel.toggleMicrophone("dev_001") },
                 isSpeakerEnabled = isSpeakerEnabled,
-                onSpeakerToggle = { isSpeakerEnabled = !isSpeakerEnabled }
+                onSpeakerToggle = { viewModel.toggleSpeaker("dev_001") }
             )
             
             // Hardware Info
             HardwareInfoCard()
             
             // Security Section
-            SecurityCard()
+            SecurityCard(
+                currentMode = securityMode,
+                onModeChange = { mode ->
+                    viewModel.setSecurityMode("dev_001", mode)
+                }
+            )
         }
     }
 }
@@ -416,9 +460,10 @@ fun HardwareInfoCard() {
 }
 
 @Composable
-fun SecurityCard() {
-    var selectedMode by remember { mutableStateOf("Auto") }
-    
+fun SecurityCard(
+    currentMode: SecurityMode = SecurityMode.AUTO,
+    onModeChange: (SecurityMode) -> Unit = {}
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -451,7 +496,12 @@ fun SecurityCard() {
                         color = Color.White.copy(alpha = 0.6f)
                     )
                     Text(
-                        text = "Automatique",
+                        text = when (currentMode) {
+                            SecurityMode.OFF -> "Désactivé"
+                            SecurityMode.HOME -> "Domicile"
+                            SecurityMode.AWAY -> "Absent"
+                            SecurityMode.AUTO -> "Automatique"
+                        },
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
@@ -487,16 +537,16 @@ fun SecurityCard() {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 listOf(
-                    "⏸ Off" to "Off",
-                    "🏠 Home" to "Home",
-                    "🚨 Absent" to "Absent",
-                    "🤖 Auto" to "Auto"
+                    "⏸ Off" to SecurityMode.OFF,
+                    "🏠 Home" to SecurityMode.HOME,
+                    "🚨 Absent" to SecurityMode.AWAY,
+                    "🤖 Auto" to SecurityMode.AUTO
                 ).forEach { (label, mode) ->
                     OutlinedButton(
-                        onClick = { selectedMode = mode },
+                        onClick = { onModeChange(mode) },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            containerColor = if (selectedMode == mode) Color(0xFF3A4D6E) else Color.Transparent,
+                            containerColor = if (currentMode == mode) Color(0xFF3A4D6E) else Color.Transparent,
                             contentColor = Color.White
                         ),
                         shape = RoundedCornerShape(8.dp)

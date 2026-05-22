@@ -17,12 +17,36 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.dobbleshop.neovision.ui.viewmodel.FeedingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FeedingScreen() {
+fun FeedingScreen(
+    viewModel: FeedingViewModel = hiltViewModel()
+) {
     var selectedPortion by remember { mutableStateOf(80) }
     var selectedTab by remember { mutableStateOf(0) } // 0 = Croquettes, 1 = Eau
+    
+    val uiState by viewModel.uiState.collectAsState()
+    val activePet by viewModel.activePet.collectAsState()
+    
+    // Show success/error snackbars
+    val snackbarHostState = remember { SnackbarHostState() }
+    
+    LaunchedEffect(uiState.successMessage) {
+        uiState.successMessage?.let { message ->
+            snackbarHostState.showSnackbar(message)
+            viewModel.clearSuccessMessage()
+        }
+    }
+    
+    LaunchedEffect(uiState.errorMessage) {
+        uiState.errorMessage?.let { message ->
+            snackbarHostState.showSnackbar(message)
+            viewModel.clearErrorMessage()
+        }
+    }
     
     Scaffold(
         topBar = {
@@ -40,6 +64,7 @@ fun FeedingScreen() {
                 )
             )
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         containerColor = Color(0xFFF5F5F5)
     ) { paddingValues ->
         Column(
@@ -82,7 +107,15 @@ fun FeedingScreen() {
                 // Manual Distribution
                 ManualDistributionLightCard(
                     selectedPortion = selectedPortion,
-                    onPortionChange = { selectedPortion = it }
+                    onPortionChange = { selectedPortion = it },
+                    onDistribute = {
+                        viewModel.dispenseFood(
+                            deviceId = "dev_001",
+                            grams = selectedPortion,
+                            confirmationRequired = false
+                        )
+                    },
+                    isLoading = uiState.isDispensing
                 )
                 
                 // Scheduled Meals
@@ -287,7 +320,9 @@ fun NextMealCard() {
 @Composable
 fun ManualDistributionLightCard(
     selectedPortion: Int,
-    onPortionChange: (Int) -> Unit
+    onPortionChange: (Int) -> Unit,
+    onDistribute: () -> Unit = {},
+    isLoading: Boolean = false
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -349,22 +384,35 @@ fun ManualDistributionLightCard(
             
             // Distribute Button
             Button(
-                onClick = { /* Distribute food */ },
+                onClick = onDistribute,
                 modifier = Modifier.fillMaxWidth(),
+                enabled = !isLoading,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF2196F3)
                 ),
                 shape = RoundedCornerShape(12.dp),
                 contentPadding = PaddingValues(16.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Restaurant,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                    tint = Color.White
-                )
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        color = Color.White,
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Restaurant,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                        tint = Color.White
+                    )
+                }
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Distribuer ${selectedPortion}g", color = Color.White, fontWeight = FontWeight.Bold)
+                Text(
+                    if (isLoading) "Distribution en cours..." else "Distribuer ${selectedPortion}g",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
