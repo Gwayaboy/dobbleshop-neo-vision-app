@@ -8,15 +8,15 @@ echo Checking for connected devices...
 "C:\Users\frtheola\AppData\Local\Android\Sdk\platform-tools\adb.exe" devices
 echo.
 
-echo Installing app...
-"C:\Users\frtheola\AppData\Local\Android\Sdk\platform-tools\adb.exe" install -r app\build\outputs\apk\debug\app-debug.apk
+echo Installing DOBBLESHOP NEO VISION...
+"C:\Users\frtheola\AppData\Local\Android\Sdk\platform-tools\adb.exe" install -r DOBBLESHOP-NEO-VISION.apk
 
 if %ERRORLEVEL% EQU 0 (
     echo.
     echo ✓ Installation successful!
     echo.
     echo Launching app...
-    "C:\Users\frtheola\AppData\Local\Android\Sdk\platform-tools\adb.exe" shell am start -n com.dobbleshop.neovision/.MainActivity
+    "C:\Users\frtheola\AppData\Local\Android\Sdk\platform-tools\adb.exe" shell am start -n com.dobbleshop.neovision.debug/com.dobbleshop.neovision.MainActivity
     echo.
     echo ✓ App launched! Check your device.
 ) else (
