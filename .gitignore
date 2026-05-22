@@ -85,3 +85,13 @@ lint/tmp/
 
 # Local scratch / probe files (anything prefixed with underscore at repo root)
 /_*
+
+# Playwright MCP cache
+.playwright-mcp/
+
+# Screenshots and mockup images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
