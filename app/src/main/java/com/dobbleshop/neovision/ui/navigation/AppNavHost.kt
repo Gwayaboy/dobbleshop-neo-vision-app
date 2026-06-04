@@ -10,6 +10,7 @@ import com.dobbleshop.neovision.ui.screens.CameraScreen
 import com.dobbleshop.neovision.ui.screens.FeedingScreen
 import com.dobbleshop.neovision.ui.screens.SettingsScreen
 import com.dobbleshop.neovision.ui.screens.SettingsDetailScreen
+import com.dobbleshop.neovision.ui.screens.SmartRationScreen
 import com.dobbleshop.neovision.ui.screens.ReservoirsDetailScreen
 import com.dobbleshop.neovision.ui.screens.HistoryScreen
 import com.dobbleshop.neovision.ui.screens.auth.LoginScreen
@@ -31,6 +32,12 @@ fun AppNavHost(
                 },
                 onNavigateToHistory = {
                     navController.navigate(AppDestination.History.route)
+                },
+                onNavigateToCamera = {
+                    navController.navigate(AppDestination.Camera.route)
+                },
+                onNavigateToSmartRation = {
+                    navController.navigate(AppDestination.SmartRation.route)
                 }
             )
         }
@@ -48,10 +55,17 @@ fun AppNavHost(
                 onOpenDetail = { itemId ->
                     navController.navigate(AppDestination.SettingsDetail.createRoute(itemId))
                 },
+                onOpenSmartRation = {
+                    navController.navigate(AppDestination.SmartRation.route)
+                },
                 onLogout = {
                     navController.navigate(AppDestination.Login.route)
                 }
             )
+        }
+
+        composable(AppDestination.SmartRation.route) {
+            SmartRationScreen(onBackClick = { navController.popBackStack() })
         }
 
         composable(AppDestination.SettingsDetail.route) { backStackEntry ->

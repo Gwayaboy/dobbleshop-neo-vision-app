@@ -1,10 +1,18 @@
 package com.dobbleshop.neovision.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -15,7 +23,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dobbleshop.neovision.ui.viewmodel.CameraViewModel
 import com.dobbleshop.neovision.data.api.SecurityMode
@@ -33,11 +45,33 @@ fun CameraScreen(
     val securityMode by viewModel.securityMode.collectAsState()
     val selectedPlugin by viewModel.selectedPlugin.collectAsState()
     val availablePlugins by viewModel.availablePlugins.collectAsState()
+    val context = LocalContext.current
+
+    var hasCameraPermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        hasCameraPermission = granted
+    }
     
     // Auto-start camera stream when screen loads
     LaunchedEffect(Unit) {
         if (streamSession == null && !uiState.isStreaming) {
             viewModel.startCameraStream("dev_001")
+        }
+    }
+
+    LaunchedEffect(selectedPlugin) {
+        if (selectedPlugin == CameraPluginType.PHONE && !hasCameraPermission) {
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
     
@@ -98,7 +132,13 @@ fun CameraScreen(
             )
 
             // Camera Feed Section
-            CameraFeedCard(selectedPlugin = selectedPlugin)
+            CameraFeedCard(
+                selectedPlugin = selectedPlugin,
+                hasCameraPermission = hasCameraPermission,
+                onRequestPermission = {
+                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                }
+            )
             
             // Camera Controls
             CameraControlsCard()
@@ -172,26 +212,26 @@ fun CameraFeedCard(selectedPlugin: CameraPluginType) {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            // Placeholder for video feed
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.PlayCircle,
-                    contentDescription = null,
-                    tint = Color.White.copy(alpha = 0.6f),
-                    modifier = Modifier.size(64.dp)
-                )
-                Text(
-                    text = if (selectedPlugin == CameraPluginType.PHONE) {
-                        "Flux local · Caméra téléphone"
-                    } else {
-                        "Flux H.264 · RPi Zero 2W"
-                    },
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White.copy(alpha = 0.8f)
-                )
+            if (selectedPlugin == CameraPluginType.PHONE) {
+                PhoneCameraPreview(modifier = Modifier.fillMaxSize())
+            } else {
+                // Placeholder for feeder stream until remote stream renderer is integrated.
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PlayCircle,
+                        contentDescription = null,
+                        tint = Color.White.copy(alpha = 0.6f),
+                        modifier = Modifier.size(64.dp)
+                    )
+                    Text(
+                        text = "Flux H.264 · RPi Zero 2W",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.White.copy(alpha = 0.8f)
+                    )
+                }
             }
             
             // EN DIRECT badge
@@ -238,6 +278,88 @@ fun CameraFeedCard(selectedPlugin: CameraPluginType) {
                         fontSize = 11.sp
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun CameraFeedCard(
+    selectedPlugin: CameraPluginType,
+    hasCameraPermission: Boolean,
+    onRequestPermission: () -> Unit
+) {
+    if (selectedPlugin == CameraPluginType.PHONE && !hasCameraPermission) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(16f / 9f),
+            colors = CardDefaults.cardColors(containerColor = Color.Black)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Autorisez l'acces camera pour le flux local.",
+                    color = Color.White,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Button(onClick = onRequestPermission) {
+                    Text("Autoriser la camera")
+                }
+            }
+        }
+    } else {
+        CameraFeedCard(selectedPlugin = selectedPlugin)
+    }
+}
+
+@Composable
+private fun PhoneCameraPreview(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val previewView = remember {
+        PreviewView(context).apply {
+            scaleType = PreviewView.ScaleType.FILL_CENTER
+            implementationMode = PreviewView.ImplementationMode.COMPATIBLE
+        }
+    }
+
+    AndroidView(
+        modifier = modifier,
+        factory = { previewView }
+    )
+
+    DisposableEffect(lifecycleOwner, previewView) {
+        val providerFuture = ProcessCameraProvider.getInstance(context)
+        val executor = ContextCompat.getMainExecutor(context)
+
+        val listener = Runnable {
+            runCatching {
+                val cameraProvider = providerFuture.get()
+                val preview = Preview.Builder().build().also {
+                    it.surfaceProvider = previewView.surfaceProvider
+                }
+
+                cameraProvider.unbindAll()
+                cameraProvider.bindToLifecycle(
+                    lifecycleOwner,
+                    CameraSelector.DEFAULT_BACK_CAMERA,
+                    preview
+                )
+            }
+        }
+
+        providerFuture.addListener(listener, executor)
+
+        onDispose {
+            runCatching {
+                ProcessCameraProvider.getInstance(context).get().unbindAll()
             }
         }
     }

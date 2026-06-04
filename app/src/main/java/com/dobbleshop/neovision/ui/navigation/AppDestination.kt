@@ -10,6 +10,7 @@ sealed class AppDestination(val route: String) {
     data object Feeding : AppDestination("feeding")
     data object Camera : AppDestination("camera")
     data object Settings : AppDestination("settings")
+    data object SmartRation : AppDestination("smart_ration")
     data object SettingsDetail : AppDestination("settings_detail/{itemId}") {
         fun createRoute(itemId: String) = "settings_detail/$itemId"
     }

@@ -3,6 +3,7 @@ package com.dobbleshop.neovision.ui.screens
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -14,211 +15,105 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onOpenDetail: (String) -> Unit = {},
+    onOpenSmartRation: () -> Unit = {},
     onLogout: () -> Unit = {}
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Réglages") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
-            )
-        }
-    ) { paddingValues ->
+    val pageBackground = Color(0xFFF3F5F8)
+
+    Scaffold(containerColor = pageBackground) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "DOBBLESHOP NEO VISION",
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
-                modifier = Modifier.padding(horizontal = 16.dp)
+                text = "Réglages",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF111827)
             )
 
-            // General Settings Section
-            SettingsSection(
-                title = "Général",
-                items = listOf(
-                    SettingItem(
-                        icon = Icons.Default.PlayArrow,
-                        title = "Onboarding",
-                        description = "Guide de démarrage",
-                        onClick = { onOpenDetail("onboarding") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.WaterDrop,
-                        title = "Gestion de l'eau",
-                        description = "Suivi consommation & alertes",
-                        onClick = { onOpenDetail("water_management") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.Wifi,
-                        title = "Communication appareil",
-                        description = "Bluetooth & Wi-Fi",
-                        onClick = { onOpenDetail("communication") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.Notifications,
-                        title = "Notifications",
-                        description = "Alertes & préférences",
-                        onClick = { onOpenDetail("notifications") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.Group,
-                        title = "Multi-utilisateurs",
-                        description = "Partage sécurisé (V1.5)",
-                        onClick = { onOpenDetail("multi_user") },
-                        badge = "Bientôt"
-                    )
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Text(
+                    text = "DOBBLESHOP NEO VISION",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    letterSpacing = 0.8.sp,
+                    color = Color(0xFF667085)
                 )
-            )
-            
-            // Diagnostics Section
+                Text(
+                    text = "DOBBLESHOP NEO VISION",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    letterSpacing = 0.8.sp,
+                    color = Color(0xFF667085)
+                )
+            }
+
             SettingsSection(
-                title = "Diagnostics & Matériel",
+                title = null,
                 items = listOf(
-                    SettingItem(
-                        icon = Icons.Default.Build,
-                        title = "Diagnostics matériels",
-                        description = "ESP32-S3 - RPI Zero 2W - capteurs",
-                        onClick = { onOpenDetail("hardware_diagnostics") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.Storage,
-                        title = "Réservoirs & Gamelle",
-                        description = "Niveaux - HX711 - VL53L0X",
-                        onClick = { onOpenDetail("reservoirs_bowl") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.Security,
-                        title = "Sécurité maison",
-                        description = "mmWave - captures - événements",
-                        onClick = { onOpenDetail("home_security") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.History,
-                        title = "Historique complet",
-                        description = "Distributions - graphiques",
-                        onClick = { onOpenDetail("full_history") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.Analytics,
-                        title = "Ration intelligente",
-                        description = "RER/DER - V1.5",
-                        onClick = { onOpenDetail("smart_ration") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.SystemUpdate,
-                        title = "Mise à jour firmware OTA",
-                        description = "v1.4.2 → v1.5.0 disponible",
-                        onClick = { onOpenDetail("firmware_ota") },
-                        badge = "Maj"
-                    )
+                    SettingItem(Icons.Default.RocketLaunch, Color(0xFF2970FF), "Onboarding", "Guide de démarrage", { onOpenDetail("onboarding") }),
+                    SettingItem(Icons.Default.WaterDrop, Color(0xFF22A6B3), "Gestion de l'eau", "Suivi consommation & alertes", { onOpenDetail("water_management") }),
+                    SettingItem(Icons.Default.Wifi, Color(0xFF2F80ED), "Communication appareil", "Bluetooth & Wi-Fi", { onOpenDetail("communication") }),
+                    SettingItem(Icons.Default.Notifications, Color(0xFFF59E0B), "Notifications", "Alertes & préférences", { onOpenDetail("notifications") }),
+                    SettingItem(Icons.Default.Groups, Color(0xFF5B50D6), "Multi-utilisateurs", "Partage sécurisé (V1.5)", { onOpenDetail("multi_user") })
                 )
             )
 
             SettingsSection(
-                title = "Compte",
+                title = "MATÉRIEL & DIAGNOSTICS",
                 items = listOf(
-                    SettingItem(
-                        icon = Icons.Default.Person,
-                        title = "Compte utilisateur",
-                        description = "Carl Tacita",
-                        onClick = { onOpenDetail("user_account") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.Cloud,
-                        title = "Synchronisation",
-                        description = "Dernière synchro : il y a 2 min",
-                        onClick = { onOpenDetail("synchronization") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.Language,
-                        title = "Langue & Région",
-                        description = "Français (France)",
-                        onClick = { onOpenDetail("language_region") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.SupportAgent,
-                        title = "Support & Aide",
-                        description = "FAQ - contact@dobbleshop.fr",
-                        onClick = { onOpenDetail("support_help") }
-                    )
+                    SettingItem(Icons.Default.MedicalServices, Color(0xFFEF4444), "Diagnostics matériels", "ESP32-S3 · RPi Zero 2W · capteurs", { onOpenDetail("hardware_diagnostics") }),
+                    SettingItem(Icons.Default.Layers, Color(0xFF3B82F6), "Réservoirs & Gamelle", "Niveaux · HX711 · VL53L0X", { onOpenDetail("reservoirs_bowl") }),
+                    SettingItem(Icons.Default.Shield, Color(0xFF22C55E), "Sécurité maison", "mmWave · captures · événements", { onOpenDetail("home_security") }),
+                    SettingItem(Icons.Default.History, Color(0xFFF97316), "Historique complet", "Distributions · graphiques", { onOpenDetail("full_history") }),
+                    SettingItem(Icons.Default.PieChart, Color(0xFF2F7AE5), "Ration intelligente", "RER/DER · V1.5", onOpenSmartRation),
+                    SettingItem(Icons.Default.SystemUpdateAlt, Color(0xFFF59E0B), "Mise à jour firmware OTA", "v1.4.2 → v1.5.0 disponible", { onOpenDetail("firmware_ota") }, badge = "Maj")
                 )
             )
-            
-            // About Section
+
             SettingsSection(
-                title = "À propos",
+                title = "COMPTE",
                 items = listOf(
-                    SettingItem(
-                        icon = Icons.Default.Info,
-                        title = "Version de l'application",
-                        description = "1.0.0 (Build 1)",
-                        onClick = { }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.Update,
-                        title = "Firmware ESP32-S3",
-                        description = "v1.4.2",
-                        onClick = { onOpenDetail("firmware_esp") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.Update,
-                        title = "Firmware RPI Zero 2W",
-                        description = "v2.1.0",
-                        onClick = { onOpenDetail("firmware_rpi") }
-                    ),
-                    SettingItem(
-                        icon = Icons.Default.Help,
-                        title = "Aide & Support",
-                        description = "Documentation et FAQ",
-                        onClick = { onOpenDetail("support_help") }
-                    )
+                    SettingItem(Icons.Default.Person, Color(0xFF6366F1), "Compte utilisateur", "Carl Tacita", { onOpenDetail("user_account") }),
+                    SettingItem(Icons.Default.Cloud, Color(0xFF06B6D4), "Synchronisation", "Dernière synchro : il y a 2 min", { onOpenDetail("synchronization") }),
+                    SettingItem(Icons.Default.Language, Color(0xFF22C55E), "Langue & Région", "Français (France)", { onOpenDetail("language_region") }),
+                    SettingItem(Icons.Default.Settings, Color(0xFF6B7280), "Support & Aide", "FAQ · contact@dobbleshop.fr", { onOpenDetail("support_help") })
                 )
             )
 
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text("🐾", style = MaterialTheme.typography.headlineSmall)
-                    Text(
-                        text = "DOBBLESHOP NEO VISION",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Text(
-                        text = "v1.4.2 · ESP32-S3 · RPi Zero 2W · V1+V1.5",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                    )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, bottom = 10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                Text("🐾", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = "DOBBLESHOP NEO VISION",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = Color(0xFF475467),
+                    fontWeight = FontWeight.SemiBold
+                )
+                Text(
+                    text = "v1.4.2 · ESP32-S3 · RPi Zero 2W · V1+V1.5",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color(0xFF98A2B3)
+                )
 
-                    OutlinedButton(
-                        onClick = onLogout,
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = Color(0xFFB3261E)
-                        )
-                    ) {
-                        Icon(Icons.Default.Logout, contentDescription = null)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Déconnexion")
-                    }
+                TextButton(onClick = onLogout) {
+                    Text("Déconnexion", color = Color(0xFFB42318))
                 }
             }
         }
@@ -227,30 +122,35 @@ fun SettingsScreen(
 
 @Composable
 fun SettingsSection(
-    title: String,
+    title: String?,
     items: List<SettingItem>
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-        )
-        
+        if (title != null) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 0.8.sp,
+                color = Color(0xFF667085),
+                modifier = Modifier.padding(horizontal = 4.dp)
+            )
+        }
+
         Card(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
             Column {
                 items.forEachIndexed { index, item ->
                     SettingsItemRow(item)
                     if (index < items.size - 1) {
-                        Divider(
-                            modifier = Modifier.padding(horizontal = 16.dp),
-                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                        HorizontalDivider(
+                            modifier = Modifier.padding(start = 84.dp),
+                            color = Color(0xFFE9EEF5)
                         )
                     }
                 }
@@ -265,7 +165,7 @@ fun SettingsItemRow(item: SettingItem) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = item.onClick)
-            .padding(16.dp),
+            .padding(horizontal = 16.dp, vertical = 14.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -274,11 +174,20 @@ fun SettingsItemRow(item: SettingItem) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.weight(1f)
         ) {
-            Icon(
-                imageVector = item.icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
+            Surface(
+                modifier = Modifier.size(36.dp),
+                shape = RoundedCornerShape(10.dp),
+                color = item.iconBackground
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        imageVector = item.icon,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
             
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -290,16 +199,18 @@ fun SettingsItemRow(item: SettingItem) {
                     Text(
                         text = item.title,
                         style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color(0xFF111827)
                     )
                     item.badge?.let { badge ->
                         Surface(
-                            color = MaterialTheme.colorScheme.secondaryContainer,
-                            shape = MaterialTheme.shapes.small
+                            color = Color(0xFFFFEAB6),
+                            shape = RoundedCornerShape(999.dp)
                         ) {
                             Text(
                                 text = badge,
                                 style = MaterialTheme.typography.labelSmall,
+                                color = Color(0xFFA15C00),
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
                             )
                         }
@@ -308,7 +219,7 @@ fun SettingsItemRow(item: SettingItem) {
                 Text(
                     text = item.description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    color = Color(0xFF667085)
                 )
             }
         }
@@ -316,13 +227,14 @@ fun SettingsItemRow(item: SettingItem) {
         Icon(
             imageVector = Icons.Default.ChevronRight,
             contentDescription = "Navigate",
-            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+            tint = Color(0xFFD0D5DD)
         )
     }
 }
 
 data class SettingItem(
     val icon: ImageVector,
+    val iconBackground: Color,
     val title: String,
     val description: String,
     val onClick: () -> Unit,

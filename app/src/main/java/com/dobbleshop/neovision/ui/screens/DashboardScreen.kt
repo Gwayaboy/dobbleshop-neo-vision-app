@@ -43,7 +43,9 @@ fun DashboardScreen(
     petsViewModel: PetsViewModel = hiltViewModel(),
     dashboardViewModel: DashboardViewModel = hiltViewModel(),
     onNavigateToReservoirs: () -> Unit = {},
-    onNavigateToHistory: () -> Unit = {}
+    onNavigateToHistory: () -> Unit = {},
+    onNavigateToCamera: () -> Unit = {},
+    onNavigateToSmartRation: () -> Unit = {}
 ) {
     val petsUiState by petsViewModel.uiState.collectAsState()
     val dashboardUiState by dashboardViewModel.uiState.collectAsState()
@@ -228,7 +230,7 @@ fun DashboardScreen(
                 }
                 
                 OutlinedButton(
-                    onClick = { /* TODO: Camera screen */ },
+                    onClick = onNavigateToCamera,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.outlinedButtonColors(
                         contentColor = Color(0xFF2196F3)
@@ -266,7 +268,7 @@ fun DashboardScreen(
                     pet = it,
                     onChangePet = { showAnimalDialog = true },
                     onQuickFeed = {
-                        dashboardViewModel.quickFeed(grams = 80)
+                        onNavigateToSmartRation()
                     }
                 )
             }
