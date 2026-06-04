@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.dobbleshop.neovision.R
@@ -35,21 +35,17 @@ fun DobbleShopApp() {
                     tonalElevation = 8.dp
                 ) {
                     bottomNavDestinations.forEach { destination ->
-                        val selected = currentDestination?.hierarchy?.any {
-                            it.route == destination.route
-                        } == true
+                        val selected = currentDestination?.route == destination.route
 
                         NavigationBarItem(
                             selected = selected,
                             onClick = {
-                                if (!selected) {
-                                    navController.navigate(destination.route) {
-                                        popUpTo(navController.graph.startDestinationId) {
-                                            saveState = true
-                                        }
-                                        launchSingleTop = true
-                                        restoreState = true
+                                navController.navigate(destination.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
                                     }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
                             },
                             icon = {
