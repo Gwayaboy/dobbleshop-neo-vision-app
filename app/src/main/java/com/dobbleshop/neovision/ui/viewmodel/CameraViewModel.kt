@@ -4,6 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dobbleshop.neovision.data.api.*
 import com.dobbleshop.neovision.data.repository.DeviceRepository
+import com.dobbleshop.neovision.ui.camera.CameraPlugin
+import com.dobbleshop.neovision.ui.camera.CameraPluginDescriptor
+import com.dobbleshop.neovision.ui.camera.CameraPluginType
+import com.dobbleshop.neovision.ui.camera.FeederCameraPlugin
+import com.dobbleshop.neovision.ui.camera.PhoneCameraPlugin
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -17,6 +22,15 @@ import javax.inject.Inject
 class CameraViewModel @Inject constructor(
     private val deviceRepository: DeviceRepository
 ) : ViewModel() {
+
+    private val plugins: List<CameraPlugin> = listOf(
+        FeederCameraPlugin(deviceRepository),
+        PhoneCameraPlugin()
+    )
+
+    private fun pluginFor(type: CameraPluginType): CameraPlugin {
+        return plugins.first { it.descriptor.type == type }
+    }
     
     // UI State
     private val _uiState = MutableStateFlow(CameraUiState())
@@ -36,6 +50,26 @@ class CameraViewModel @Inject constructor(
     // Security mode
     private val _securityMode = MutableStateFlow(SecurityMode.OFF)
     val securityMode: StateFlow<SecurityMode> = _securityMode.asStateFlow()
+
+    private val _selectedPlugin = MutableStateFlow(CameraPluginType.FEEDER)
+    val selectedPlugin: StateFlow<CameraPluginType> = _selectedPlugin.asStateFlow()
+
+    private val _availablePlugins = MutableStateFlow(plugins.map { it.descriptor })
+    val availablePlugins: StateFlow<List<CameraPluginDescriptor>> = _availablePlugins.asStateFlow()
+
+    fun selectPlugin(type: CameraPluginType, deviceId: String = "dev_001") {
+        if (_selectedPlugin.value == type) return
+
+        val current = _selectedPlugin.value
+        _selectedPlugin.value = type
+
+        viewModelScope.launch {
+            pluginFor(current).stopStream(deviceId)
+            _streamSession.value = null
+            _uiState.update { it.copy(isStreaming = false) }
+            startCameraStream(deviceId)
+        }
+    }
     
     /**
      * Start camera stream
@@ -43,8 +77,9 @@ class CameraViewModel @Inject constructor(
     fun startCameraStream(deviceId: String, quality: StreamQuality = StreamQuality.AUTO) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoadingStream = true, errorMessage = null) }
-            
-            val result = deviceRepository.startCameraStream(deviceId, quality)
+
+            val activePlugin = pluginFor(_selectedPlugin.value)
+            val result = activePlugin.startStream(deviceId, quality)
             
             _uiState.update {
                 when {
@@ -70,7 +105,7 @@ class CameraViewModel @Inject constructor(
      */
     fun stopCameraStream(deviceId: String) {
         viewModelScope.launch {
-            val result = deviceRepository.stopCameraStream(deviceId)
+            val result = pluginFor(_selectedPlugin.value).stopStream(deviceId)
             
             if (result.isSuccess) {
                 _streamSession.value = null

@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dobbleshop.neovision.ui.viewmodel.CameraViewModel
 import com.dobbleshop.neovision.data.api.SecurityMode
+import com.dobbleshop.neovision.ui.camera.CameraPluginType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,6 +31,8 @@ fun CameraScreen(
     val isMicEnabled by viewModel.isMicEnabled.collectAsState()
     val isSpeakerEnabled by viewModel.isSpeakerEnabled.collectAsState()
     val securityMode by viewModel.securityMode.collectAsState()
+    val selectedPlugin by viewModel.selectedPlugin.collectAsState()
+    val availablePlugins by viewModel.availablePlugins.collectAsState()
     
     // Auto-start camera stream when screen loads
     LaunchedEffect(Unit) {
@@ -66,7 +69,7 @@ fun CameraScreen(
             TopAppBar(
                 title = {
                     Text(
-                        "Caméra & Audio",
+                        "Caméra",
                         color = Color.White
                     )
                 },
@@ -86,8 +89,16 @@ fun CameraScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            CameraSourceSelector(
+                selectedPlugin = selectedPlugin,
+                availablePlugins = availablePlugins.map { it.type to it.label },
+                onPluginSelected = { pluginType ->
+                    viewModel.selectPlugin(pluginType, "dev_001")
+                }
+            )
+
             // Camera Feed Section
-            CameraFeedCard()
+            CameraFeedCard(selectedPlugin = selectedPlugin)
             
             // Camera Controls
             CameraControlsCard()
@@ -115,7 +126,40 @@ fun CameraScreen(
 }
 
 @Composable
-fun CameraFeedCard() {
+fun CameraSourceSelector(
+    selectedPlugin: CameraPluginType,
+    availablePlugins: List<Pair<CameraPluginType, String>>,
+    onPluginSelected: (CameraPluginType) -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF2C2C2E))
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "Source caméra",
+                style = MaterialTheme.typography.titleSmall,
+                color = Color.White
+            )
+
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                availablePlugins.forEach { (type, label) ->
+                    FilterChip(
+                        selected = selectedPlugin == type,
+                        onClick = { onPluginSelected(type) },
+                        label = { Text(label) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CameraFeedCard(selectedPlugin: CameraPluginType) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -140,7 +184,11 @@ fun CameraFeedCard() {
                     modifier = Modifier.size(64.dp)
                 )
                 Text(
-                    text = "Flux H.264 · RPi Zero 2W",
+                    text = if (selectedPlugin == CameraPluginType.PHONE) {
+                        "Flux local · Caméra téléphone"
+                    } else {
+                        "Flux H.264 · RPi Zero 2W"
+                    },
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White.copy(alpha = 0.8f)
                 )

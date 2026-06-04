@@ -23,57 +23,60 @@ fun DobbleShopApp() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+    val showBottomBar = bottomNavDestinations.any { it.route == currentDestination?.route }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            NavigationBar(
-                containerColor = MaterialTheme.colorScheme.surface,
-                contentColor = MaterialTheme.colorScheme.onSurface,
-                tonalElevation = 8.dp
-            ) {
-                bottomNavDestinations.forEach { destination ->
-                    val selected = currentDestination?.hierarchy?.any { 
-                        it.route == destination.route 
-                    } == true
+            if (showBottomBar) {
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    tonalElevation = 8.dp
+                ) {
+                    bottomNavDestinations.forEach { destination ->
+                        val selected = currentDestination?.hierarchy?.any {
+                            it.route == destination.route
+                        } == true
 
-                    NavigationBarItem(
-                        selected = selected,
-                        onClick = {
-                            if (!selected) {
-                                navController.navigate(destination.route) {
-                                    popUpTo(navController.graph.startDestinationId) {
-                                        saveState = true
+                        NavigationBarItem(
+                            selected = selected,
+                            onClick = {
+                                if (!selected) {
+                                    navController.navigate(destination.route) {
+                                        popUpTo(navController.graph.startDestinationId) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
                                 }
+                            },
+                            icon = {
+                                Icon(
+                                    imageVector = when (destination) {
+                                        is AppDestination.Dashboard -> Icons.Default.Home
+                                        is AppDestination.Feeding -> Icons.Default.Restaurant
+                                        is AppDestination.Camera -> Icons.Default.Videocam
+                                        is AppDestination.Settings -> Icons.Default.Settings
+                                        else -> Icons.Default.Home
+                                    },
+                                    contentDescription = null
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = when (destination) {
+                                        is AppDestination.Dashboard -> stringResource(R.string.nav_home)
+                                        is AppDestination.Feeding -> stringResource(R.string.nav_feeding)
+                                        is AppDestination.Camera -> stringResource(R.string.nav_camera)
+                                        is AppDestination.Settings -> stringResource(R.string.nav_settings)
+                                        else -> ""
+                                    }
+                                )
                             }
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = when (destination) {
-                                    is AppDestination.Dashboard -> Icons.Default.Home
-                                    is AppDestination.Feeding -> Icons.Default.Restaurant
-                                    is AppDestination.Camera -> Icons.Default.Videocam
-                                    is AppDestination.Settings -> Icons.Default.Settings
-                                    else -> Icons.Default.Home
-                                },
-                                contentDescription = null
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = when (destination) {
-                                    is AppDestination.Dashboard -> stringResource(R.string.nav_home)
-                                    is AppDestination.Feeding -> stringResource(R.string.nav_feeding)
-                                    is AppDestination.Camera -> stringResource(R.string.nav_camera)
-                                    is AppDestination.Settings -> stringResource(R.string.nav_settings)
-                                    else -> ""
-                                }
-                            )
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }

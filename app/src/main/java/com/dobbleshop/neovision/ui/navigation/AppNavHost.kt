@@ -9,8 +9,10 @@ import com.dobbleshop.neovision.ui.screens.DashboardScreen
 import com.dobbleshop.neovision.ui.screens.CameraScreen
 import com.dobbleshop.neovision.ui.screens.FeedingScreen
 import com.dobbleshop.neovision.ui.screens.SettingsScreen
+import com.dobbleshop.neovision.ui.screens.SettingsDetailScreen
 import com.dobbleshop.neovision.ui.screens.ReservoirsDetailScreen
 import com.dobbleshop.neovision.ui.screens.HistoryScreen
+import com.dobbleshop.neovision.ui.screens.auth.LoginScreen
 
 @Composable
 fun AppNavHost(
@@ -42,7 +44,34 @@ fun AppNavHost(
         }
         
         composable(AppDestination.Settings.route) {
-            SettingsScreen()
+            SettingsScreen(
+                onOpenDetail = { itemId ->
+                    navController.navigate(AppDestination.SettingsDetail.createRoute(itemId))
+                },
+                onLogout = {
+                    navController.navigate(AppDestination.Login.route)
+                }
+            )
+        }
+
+        composable(AppDestination.SettingsDetail.route) { backStackEntry ->
+            SettingsDetailScreen(
+                itemId = backStackEntry.arguments?.getString("itemId").orEmpty(),
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable(AppDestination.Login.route) {
+            LoginScreen(
+                onLoginSuccess = {
+                    navController.navigate(AppDestination.Dashboard.route) {
+                        popUpTo(AppDestination.Login.route) { inclusive = true }
+                    }
+                },
+                onNavigateToRegister = {
+                    // Registration flow is not part of this iteration.
+                }
+            )
         }
         
         composable(AppDestination.ReservoirsDetail.route) {
