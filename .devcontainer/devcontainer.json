@@ -1,0 +1,76 @@
+{
+  "name": "DOBBLESHOP NEO VISION - Android Development",
+  "dockerFile": "Dockerfile",
+  "context": "..",
+  "remoteUser": "root",
+  "workspaceFolder": "/workspace",
+  "mounts": [
+    "source=${localEnv:HOME}/.gradle,target=/root/.gradle,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.android,target=/root/.android,type=bind,consistency=cached"
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Google.android-ndk-manager",
+        "fwcd.kotlin",
+        "mathiasfrohlich.Kotlin",
+        "redhat.vscode-xml",
+        "gradle.gradle-for-java",
+        "vscjava.vscode-gradle",
+        "vscjava.vscode-java-debug",
+        "naco-siren.gradle-language",
+        "ms-azuretools.vscode-docker",
+        "eamodio.gitlens"
+      ],
+      "settings": {
+        "java.home": "/usr/lib/jvm/java-17-openjdk-amd64",
+        "java.jdt.ls.vmargs": "-Xmx4g",
+        "[kotlin]": {
+          "editor.defaultFormatter": "fwcd.kotlin",
+          "editor.formatOnSave": true
+        },
+        "[gradle]": {
+          "editor.formatOnSave": false
+        },
+        "gradle.javaHome": "/usr/lib/jvm/java-17-openjdk-amd64",
+        "android.sdkPath": "/opt/android-sdk",
+        "files.watcherExclude": {
+          "**/.gradle/**": true,
+          "**/build/**": true,
+          "**/.idea/**": true
+        }
+      }
+    }
+  },
+  "postCreateCommand": "echo 'Android Development Environment Ready!' && java -version && echo 'Gradle wrapper will download on first use.'",
+  "remoteEnv": {
+    "ANDROID_SDK_ROOT": "/opt/android-sdk",
+    "ANDROID_HOME": "/opt/android-sdk",
+    "JAVA_HOME": "/usr/lib/jvm/java-17-openjdk-amd64",
+    "PATH": "${containerEnv:PATH}:/opt/android-sdk/cmdline-tools/latest/bin:/opt/android-sdk/platform-tools"
+  },
+  "forwardPorts": [
+    5554,
+    5555,
+    8080
+  ],
+  "forwardPortsAction": "silent",
+  "portsAttributes": {
+    "5554": {
+      "label": "Emulator Console",
+      "onAutoForward": "silent"
+    },
+    "5555": {
+      "label": "ADB",
+      "onAutoForward": "silent"
+    },
+    "8080": {
+      "label": "Local Debug Server",
+      "onAutoForward": "silent"
+    }
+  }
+}
