@@ -46,11 +46,17 @@ RUN mkdir -p ${ANDROID_SDK_ROOT}
 # Download and install Android cmdline-tools
 RUN cd /tmp && \
     curl -L -o cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip && \
-    unzip -q cmdline-tools.zip && \
     mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools && \
-    mv cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/latest-src && \
-    mv ${ANDROID_SDK_ROOT}/cmdline-tools/latest-src/cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/latest && \
-    rm -rf ${ANDROID_SDK_ROOT}/cmdline-tools/latest-src && \
+    unzip -q cmdline-tools.zip -d ${ANDROID_SDK_ROOT}/cmdline-tools/unpacked && \
+    if [ -d ${ANDROID_SDK_ROOT}/cmdline-tools/unpacked/cmdline-tools ]; then \
+        mv ${ANDROID_SDK_ROOT}/cmdline-tools/unpacked/cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/latest; \
+    elif [ -d ${ANDROID_SDK_ROOT}/cmdline-tools/unpacked/tools ]; then \
+        mv ${ANDROID_SDK_ROOT}/cmdline-tools/unpacked/tools ${ANDROID_SDK_ROOT}/cmdline-tools/latest; \
+    else \
+        mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools/latest && \
+        mv ${ANDROID_SDK_ROOT}/cmdline-tools/unpacked/* ${ANDROID_SDK_ROOT}/cmdline-tools/latest/; \
+    fi && \
+    rm -rf ${ANDROID_SDK_ROOT}/cmdline-tools/unpacked && \
     rm cmdline-tools.zip
 
 # Accept Android licenses
