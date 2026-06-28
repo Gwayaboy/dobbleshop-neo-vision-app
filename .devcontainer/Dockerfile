@@ -38,7 +38,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # Additional utilities
     vim \
     nano \
-    which \
     && rm -rf /var/lib/apt/lists/*
 
 # Create Android SDK directory
