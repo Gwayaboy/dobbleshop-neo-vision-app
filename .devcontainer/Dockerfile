@@ -6,7 +6,7 @@ ENV ANDROID_SDK_ROOT=/opt/android-sdk \
     ANDROID_HOME=/opt/android-sdk \
     JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
     PATH=$PATH:/opt/android-sdk/cmdline-tools/latest/bin:/opt/android-sdk/platform-tools:/opt/android-sdk/tools/bin:/usr/lib/jvm/java-17-openjdk-amd64/bin \
-    GRADLE_USER_HOME=/workspace/.gradle
+    GRADLE_USER_HOME=/root/.gradle
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -75,4 +75,4 @@ RUN ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --sdk_root=${ANDROID
 RUN echo "Java version:" && java -version && \
     echo "\nAndroid SDK Manager:" && ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --list_installed
 
-WORKDIR /workspace
+WORKDIR /workspaces

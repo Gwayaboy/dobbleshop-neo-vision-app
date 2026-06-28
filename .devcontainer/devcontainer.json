@@ -3,7 +3,7 @@
   "dockerFile": "Dockerfile",
   "context": "..",
   "remoteUser": "root",
-  "workspaceFolder": "/workspace",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "mounts": [
     "source=gradle-cache,target=/root/.gradle,type=volume",
     "source=android-cache,target=/root/.android,type=volume"
