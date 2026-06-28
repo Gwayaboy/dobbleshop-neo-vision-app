@@ -5,8 +5,8 @@
   "remoteUser": "root",
   "workspaceFolder": "/workspace",
   "mounts": [
-    "source=${localEnv:HOME}/.gradle,target=/root/.gradle,type=bind,consistency=cached",
-    "source=${localEnv:HOME}/.android,target=/root/.android,type=bind,consistency=cached"
+    "source=gradle-cache,target=/root/.gradle,type=volume",
+    "source=android-cache,target=/root/.android,type=volume"
   ],
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},

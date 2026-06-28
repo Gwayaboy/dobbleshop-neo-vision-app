@@ -49,7 +49,9 @@ RUN cd /tmp && \
     curl -L -o cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip && \
     unzip -q cmdline-tools.zip && \
     mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools && \
-    mv cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/latest && \
+    mv cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/latest-src && \
+    mv ${ANDROID_SDK_ROOT}/cmdline-tools/latest-src/cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/latest && \
+    rm -rf ${ANDROID_SDK_ROOT}/cmdline-tools/latest-src && \
     rm cmdline-tools.zip
 
 # Accept Android licenses
@@ -63,7 +65,6 @@ RUN ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --sdk_root=${ANDROID
     "platforms;android-26" \
     "platforms;android-36" \
     "build-tools;36.0.0" \
-    "tools" \
     "platform-tools" \
     "cmdline-tools;latest" \
     "system-images;android-36;default;x86_64" \
